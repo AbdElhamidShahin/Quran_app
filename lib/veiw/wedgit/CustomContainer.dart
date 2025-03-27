@@ -3,14 +3,14 @@ import 'package:quran_app/veiw/wedgit/GotoWidget.dart';
 import 'package:quran_app/veiw_model/color/coloe.dart';
 
 class CustomContainer extends StatelessWidget {
-  const CustomContainer(
-      {Key? key,
-        required this.height1,
-        required this.image,
-        required this.title,
-        required this.color,
-        this.onpressed})
-      : super(key: key);
+  const CustomContainer({
+    Key? key,
+    required this.height1,
+    required this.image,
+    required this.title,
+    required this.color,
+    this.onpressed,
+  }) : super(key: key);
 
   final double height1;
   final String image;
@@ -25,27 +25,29 @@ class CustomContainer extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.only(top: width * .06),
       child: GestureDetector(
-        // onTap: onpressed,
         child: Container(
           height: height1,
           width: width * .4,
           decoration: BoxDecoration(
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.5),
-                  spreadRadius: 5,
-                  blurRadius: 7,
-                  offset: Offset(1.5, 3), // changes position of shadow
-                ),
-              ],
-              image: const DecorationImage(
-                  image: AssetImage('assets/icons/dashboard.png'),
-                  fit: BoxFit.fill),
-              borderRadius: BorderRadius.circular(25)),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.5),
+                spreadRadius: 5,
+                blurRadius: 7,
+                offset: Offset(1.5, 3), // changes position of shadow
+              ),
+            ],
+            image: const DecorationImage(
+              image: AssetImage('assets/icons/dashboard.png'),
+              fit: BoxFit.fill,
+            ),
+            borderRadius: BorderRadius.circular(25),
+          ),
           child: Container(
             decoration: BoxDecoration(
-                color: color.withOpacity(0.8),
-                borderRadius: BorderRadius.circular(25)),
+              color: color.withOpacity(0.8),
+              borderRadius: BorderRadius.circular(25),
+            ),
             child: Padding(
               padding: EdgeInsets.symmetric(
                 vertical: height * .02,
@@ -68,7 +70,7 @@ class CustomContainer extends StatelessWidget {
                   Padding(
                     padding: EdgeInsets.only(left: width * .02),
                     child: GotoWidget(),
-                  )
+                  ),
                 ],
               ),
             ),
