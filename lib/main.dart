@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:quran_app/veiw/d.dart';
+import 'package:quran_app/veiw/QuranDetailsScreen.dart';
 import 'package:quran_app/veiw/screens/HomePage.dart';
 import 'package:quran_app/veiw/screens/My_QuranPage.dart';
 

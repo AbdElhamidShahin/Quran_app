@@ -8,12 +8,12 @@ titleStyle() {
 
 titleGreenStyle() {
   return TextStyle(
-      color: greenColor, fontWeight: FontWeight.bold, fontSize: 18);
+      color: greenColor, fontWeight: FontWeight.bold, fontSize: 22);
 }
 
 subtitleStyle() {
   return const TextStyle(
-      color: Colors.white, fontWeight: FontWeight.w300, fontSize: 14);
+      color: Colors.black, fontWeight: FontWeight.w300, fontSize: 14);
 }
 
 miniStyle() {
