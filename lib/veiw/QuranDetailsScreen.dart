@@ -1,37 +1,66 @@
+// veiw/QuranDetailsScreen.dart
 import 'package:flutter/material.dart';
-import 'package:quran_app/veiw/wedgit/buildContentScess.dart';
-import 'package:quran_app/veiw/wedgit/buildEmptyWidget.dart';
-import 'package:quran_app/veiw/wedgit/buildErrorWidget.dart';
-import 'package:quran_app/veiw/wedgit/buildLoadingShimmer.dart';
-import '../model/Item.dart';
+import '../model/item.dart';
 import '../model/JsonScreen.dart';
+import 'wedgit/buildLoadingShimmer.dart';
+import 'wedgit/buildErrorWidget.dart';
+import 'wedgit/buildEmptyWidget.dart';
+import 'wedgit/buildContentScess.dart';
 
 class QuranDetailsScreen extends StatelessWidget {
-  final String category;
-  final String surahName; // Add surahName parameter
+  final int startPage;
+  final String surahName;
+  final String? surahNameEn;
+  final String? transliteration;
 
   const QuranDetailsScreen({
     super.key,
-    required this.category,
-    required this.surahName, // Require surahName
+    required this.startPage,
+    required this.surahName,
+    this.surahNameEn,
+    this.transliteration,
   });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFFEFAEE), // تطبيق اللون كخلفية
+      appBar: AppBar(
+        title: Column(
+          children: [
+            Text(surahName,
+                style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                )),
+            if (surahNameEn != null || transliteration != null)
+              Text(
+                '${surahNameEn ?? ''} ${transliteration != null ? '($transliteration)' : ''}',
+                style: const TextStyle(fontSize: 14),
+              ),
+          ],
+        ),
+        centerTitle: true,
+        backgroundColor: const Color(0xFFFEFAEE),
+      ),
       body: FutureBuilder<List<Item>>(
-        future: fetchTravelFromJson(context, category),
+        future: fetchQuranPages(startPage),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return buildLoadingShimmer();
-          } else if (snapshot.hasError) {
+          }
+          if (snapshot.hasError) {
             return buildErrorWidget(snapshot.error.toString());
-          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          }
+          if (!snapshot.hasData || snapshot.data!.isEmpty) {
             return buildEmptyWidget();
           }
 
-          return buildContentScess(snapshot.data!, surahName);
+          return buildContentSuccess(
+            data,
+            surahName,
+            surahNameEn: surahNameEn,
+            transliteration: transliteration,
+          );
         },
       ),
     );

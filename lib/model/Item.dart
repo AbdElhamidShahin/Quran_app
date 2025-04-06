@@ -1,25 +1,37 @@
-
-
 class Item {
-  final int chapter;
-  final int verse;
-  final String text;
+  final int page;
+  final String imageUrl;
+  final int surahNumber;
+  final String surahNameAr;
+  final String surahNameEn;
+  final String transliteration;
+  final int startVerse;
+  final int endVerse;
 
   Item({
-    required this.chapter,
-    required this.verse,
-    required this.text,
+    required this.page,
+    required this.imageUrl,
+    required this.surahNumber,
+    required this.surahNameAr,
+    required this.surahNameEn,
+    required this.transliteration,
+    required this.startVerse,
+    required this.endVerse,
   });
 
   factory Item.fromJson(Map<String, dynamic> json) {
+    final start = json['start'];
     return Item(
-      chapter: json['chapter'] as int,
-      verse: json['verse'] as int,
-      text: json['text'] as String,
+      page: json['page'] as int,
+      imageUrl: json['image']['url'] as String,
+      surahNumber: start['surah_number'] as int,
+      surahNameAr: start['name']['ar'] as String,
+      surahNameEn: start['name']['en'] as String,
+      transliteration: start['name']['transliteration'] as String,
+      startVerse: start['verse'] as int,
+      endVerse: json['end']['verse'] as int,
     );
   }
 
-  Map<String, dynamic> toJson() {
-    return {'chapter': chapter, 'verse': verse, 'text': text};
-  }
+  int get versesCount => endVerse - startVerse + 1;
 }

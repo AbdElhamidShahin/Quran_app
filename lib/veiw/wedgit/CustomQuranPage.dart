@@ -1,22 +1,31 @@
+// veiw/wedgit/CustomQuranPage.dart
 import 'package:flutter/material.dart';
-
-import '../../model/suraMap.dart';
+import '../../model/item.dart';
 import '../../veiw_model/color/coloe.dart';
 import '../QuranDetailsScreen.dart';
 
 class CustomQuranPage extends StatelessWidget {
   final int index;
-  const CustomQuranPage({super.key, required this.index});
+  final Item sura;
+
+  const CustomQuranPage({
+    super.key,
+    required this.index,
+    required this.sura,
+  });
+
   @override
   Widget build(BuildContext context) {
-    final suras = suraMap.values.toList();
-    final sura = suras[index];
     return GestureDetector(
       onTap: () {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => QuranDetailsScreen(category: '${index + 1}', surahName: sura["suraNameArabic"],),
+            builder: (context) => QuranDetailsScreen(
+              startPage: sura.page,
+              surahName: sura.surahNameAr,
+              surahNameEn: sura.surahNameEn,
+            ),
           ),
         );
       },
@@ -30,10 +39,10 @@ class CustomQuranPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(sura["suraNameArabic"] ?? "", style: titleGreenStyle()),
+                Text(sura.surahNameAr, style: titleGreenStyle()),
                 const SizedBox(height: 4),
                 Text(
-                  "${sura["suraVersesNumber"]} آيات",
+                  "${sura.versesCount} آيات",
                   style: subtitleStyle(),
                 ),
               ],
@@ -42,7 +51,7 @@ class CustomQuranPage extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Text(
-                sura["suraNameEnglish"] ?? "",
+                sura.surahNameEn,
                 style: titleGreenStyle(),
               ),
             ),
@@ -56,7 +65,7 @@ class CustomQuranPage extends StatelessWidget {
                   color: greenColor,
                 ),
                 Text(
-                  sura["index"] ?? "",
+                  sura.surahNumber.toString(),
                   style: const TextStyle(
                     color: Colors.black,
                     fontSize: 20,

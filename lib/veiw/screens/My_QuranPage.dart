@@ -1,9 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-import '../../model/suraMap.dart';
+import '../../model/item.dart';
+import '../../model/JsonScreen.dart';
 import '../../veiw_model/color/coloe.dart';
-
 import '../wedgit/CustomQuranPage.dart';
 
 class MyQuranPage extends StatelessWidget {
@@ -11,7 +9,6 @@ class MyQuranPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final suras = suraMap.values.toList();
     return Scaffold(
       backgroundColor: backgroundColor,
       appBar: AppBar(
@@ -21,11 +18,33 @@ class MyQuranPage extends StatelessWidget {
         title: Text("myQuran", style: titleGreenStyle()),
         actions: [Icon(Icons.home, color: greenColor)],
       ),
-      body: ListView.builder(
-        padding: const EdgeInsets.all(16),
-        itemCount: suras.length,
-        itemBuilder: (BuildContext context, int index) {
-          return CustomQuranPage(index: index);
+      body: FutureBuilder<List<Item>>(
+        future: fetchSuraDetails(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator(color: greenColor));
+          }
+
+          if (snapshot.hasError) {
+            return Center(child: Text('Error loading data', style: TextStyle(color: Colors.red)));
+          }
+
+          if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return Center(child: Text('No data available', style: subtitleStyle()));
+          }
+
+          final suras = snapshot.data!;
+
+          return ListView.builder(
+            padding: const EdgeInsets.all(16),
+            itemCount: suras.length,
+            itemBuilder: (BuildContext context, int index) {
+              return CustomQuranPage(
+                index: index,
+                sura: suras[index],
+              );
+            },
+          );
         },
       ),
     );
