@@ -21,11 +21,13 @@ class CustomQuranPage extends StatelessWidget {
           context,
           MaterialPageRoute(
             builder: (context) => QuranDetailsScreen(
-              startPage: sura.page,
+              surahNumber: sura.surahNumber,
               surahName: sura.surahNameAr,
               surahNameEn: sura.surahNameEn,
+              transliteration: sura.surahTransliteration,
             ),
           ),
+
         );
       },
       child: Padding(
@@ -83,11 +85,8 @@ class CustomQuranPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Text(
-                    sura.surahNameEn,
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.grey[700],
-                    ),
+                    sura.surahTransliteration,
+                    style:titleGreenStyle()
                   ),
                     Text(
                       sura.surahNameEn,

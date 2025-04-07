@@ -7,7 +7,6 @@ class Item {
   final String surahTransliteration;
   final int startVerse;
   final int endVerse;
-  final int versesCount; // هذا الحقل يجب أن يحسب بشكل صحيح
 
   Item({
     required this.page,
@@ -18,26 +17,27 @@ class Item {
     required this.surahTransliteration,
     required this.startVerse,
     required this.endVerse,
-    required this.versesCount,
   });
 
   factory Item.fromJson(Map<String, dynamic> json) {
     final start = json['start'];
-    final end = json['end'];
+    String imageUrl = json['image']['url'] as String;
 
-    // حساب عدد الآيات بشكل صحيح
-    final verses = (end['verse'] as int) - (start['verse'] as int) + 1;
+    if (!imageUrl.startsWith('assets/') && !imageUrl.startsWith('http')) {
+      imageUrl = 'assets/$imageUrl';
+    }
 
     return Item(
       page: json['page'] as int,
-      imageUrl: json['image']['url'] as String,
+      imageUrl: imageUrl,
       surahNumber: start['surah_number'] as int,
       surahNameAr: start['name']['ar'] as String,
       surahNameEn: start['name']['en'] as String,
       surahTransliteration: start['name']['transliteration'] as String,
       startVerse: start['verse'] as int,
-      endVerse: end['verse'] as int,
-      versesCount: verses, // هنا يتم تعيين عدد الآيات المحسوب
+      endVerse: json['end']['verse'] as int,
     );
   }
+
+  int get versesCount => endVerse - startVerse + 1;
 }

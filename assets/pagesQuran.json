@@ -1,7 +1,7 @@
 [
   {
     "page": 1,
-    "image": { "url": "assets/data/quran_pages/1.png" },
+    "image": { "url": "assets/data/quran_image/1.png" },
     "start": {
       "surah_number": 1,
       "verse": 1,

@@ -68,6 +68,7 @@ flutter:
     - assets/fonts/
     - assets/pagesQuran.json
     - assets/data/quran_image/
+    - assets/data/quran_image/
 
 
 

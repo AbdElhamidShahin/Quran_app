@@ -1,21 +1,21 @@
-// veiw/QuranDetailsScreen.dart
 import 'package:flutter/material.dart';
 import '../model/item.dart';
 import '../model/JsonScreen.dart';
+import '../veiw_model/color/coloe.dart';
 import 'wedgit/buildLoadingShimmer.dart';
 import 'wedgit/buildErrorWidget.dart';
 import 'wedgit/buildEmptyWidget.dart';
 import 'wedgit/buildContentScess.dart';
 
 class QuranDetailsScreen extends StatelessWidget {
-  final int startPage;
+  final int surahNumber; // ✅ بدل startPage
   final String surahName;
   final String? surahNameEn;
   final String? transliteration;
 
   const QuranDetailsScreen({
     super.key,
-    required this.startPage,
+    required this.surahNumber, // ✅ تعديل هنا
     required this.surahName,
     this.surahNameEn,
     this.transliteration,
@@ -24,26 +24,34 @@ class QuranDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: backgroundColor,
+
       appBar: AppBar(
+        backgroundColor: backgroundColor,
         title: Column(
-          children: [
-            Text(surahName,
-                style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                )),
-            if (surahNameEn != null || transliteration != null)
-              Text(
-                '${surahNameEn ?? ''} ${transliteration != null ? '($transliteration)' : ''}',
-                style: const TextStyle(fontSize: 14),
-              ),
-          ],
+          children: [Text("سوره ${surahName}", style: titleGreenStyle())],
         ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+
+
+            },
+            icon: Icon(Icons.arrow_forward_outlined),
+          ),
+        ],
+        leading: Center(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            child: Text("${surahNumber}",style: subtitleStyle(),),
+          ),
+        ),
+
         centerTitle: true,
-        backgroundColor: const Color(0xFFFEFAEE),
       ),
       body: FutureBuilder<List<Item>>(
-        future: fetchQuranPages(startPage),
+        future: fetchQuranPagesBySurah(surahNumber),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return buildLoadingShimmer();
@@ -55,8 +63,8 @@ class QuranDetailsScreen extends StatelessWidget {
             return buildEmptyWidget();
           }
 
-          return buildContentSuccess(  context, // أضف context هنا
-
+          return buildContentSuccess(
+            context,
             snapshot.data!,
             surahName,
             surahNameEn: surahNameEn,
