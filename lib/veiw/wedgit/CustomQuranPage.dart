@@ -1,4 +1,3 @@
-// veiw/wedgit/CustomQuranPage.dart
 import 'package:flutter/material.dart';
 import '../../model/item.dart';
 import '../../veiw_model/color/coloe.dart';
@@ -33,46 +32,72 @@ class CustomQuranPage extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 8.0),
         child: Row(
           children: [
-            Container(width: 5, height: 50, color: Colors.red),
-            const SizedBox(width: 8),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(sura.surahNameAr, style: titleGreenStyle()),
-                const SizedBox(height: 4),
-                Text(
-                  "${sura.versesCount} آيات",
-                  style: subtitleStyle(),
-                ),
-              ],
-            ),
-            const Spacer(),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+            // رقم السورة
+            Container(
+              width: 40,
+              height: 40,
+              decoration: BoxDecoration(
+                color: greenColor.withOpacity(0.2),
+                shape: BoxShape.circle,
+              ),
+              alignment: Alignment.center,
               child: Text(
-                sura.surahNameEn,
-                style: titleGreenStyle(),
+                sura.surahNumber.toString(),
+                style: TextStyle(
+                  color: greenColor,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
-            Stack(
-              alignment: Alignment.center,
-              children: [
-                Image.asset(
-                  'assets/icons/images (1) (1) (1).png',
-                  width: 50,
-                  height: 50,
-                  color: greenColor,
-                ),
-                Text(
-                  sura.surahNumber.toString(),
-                  style: const TextStyle(
-                    color: Colors.black,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
+            const SizedBox(width: 12),
+
+            // تفاصيل السورة
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    sura.surahNameAr,
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black87,
+                    ),
                   ),
-                ),
-              ],
+                  const SizedBox(height: 4),
+                  Text(
+                    'عدد الآيات: ${sura.versesCount}', // هنا يتم عرض عدد الآيات
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.grey[600],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            // الاسم الإنجليزي والترجمة
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text(
+                    sura.surahNameEn,
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.grey[700],
+                    ),
+                  ),
+                    Text(
+                      sura.surahNameEn,
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.grey[500],
+                      ),
+                    ),
+                ],
+              ),
             ),
           ],
         ),

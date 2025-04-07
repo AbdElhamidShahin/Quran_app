@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../model/item.dart';
 
-import 'package:flutter/material.dart';
-import '../../model/item.dart';
-
 Widget buildContentSuccess(
     BuildContext context, // أضفنا context هنا
     List<Item> pages,
@@ -79,7 +76,7 @@ Widget buildContentSuccess(
               child: Center(
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(8),
-                  child: Image.network(
+                  child: Image.asset(
                     page.imageUrl,
                     fit: BoxFit.contain,
                     loadingBuilder: (context, child, loadingProgress) {

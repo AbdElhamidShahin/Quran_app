@@ -35,12 +35,26 @@ Future<List<Item>> fetchQuranPages(int startPage) async {
     final String response = await rootBundle.loadString('assets/pagesQuran.json');
     final List<dynamic> data = json.decode(response) as List<dynamic>;
 
-    return data
-        .where((page) => page['page'] == startPage)
-        .map<Item>((page) => Item.fromJson(page)) // تحديد نوع الإرجاع صراحةً
-        .toList();
+    // البحث عن الصفحة المطلوبة
+    final pageData = data.firstWhere(
+          (page) => page['page'] == startPage,
+      orElse: () => null,
+    );
+
+    if (pageData == null) return [];
+
+    // تعديل مسار الصورة إذا كان نسبياً
+    String imageUrl = pageData['image']['url'];
+    if (!imageUrl.startsWith('http')) {
+      imageUrl = 'https://example.com$imageUrl'; // استبدل example.com بالمسار الأساسي
+    }
+
+    // تحديث بيانات الصورة في العنصر
+    pageData['image']['url'] = imageUrl;
+
+    return [Item.fromJson(pageData)]; // إرجاع قائمة تحتوي على صفحة واحدة
   } catch (e) {
-    debugPrint('Error fetching Quran pages: $e');
+    debugPrint('Error fetching Quran page: $e');
     return [];
   }
 }

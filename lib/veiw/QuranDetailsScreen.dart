@@ -55,8 +55,9 @@ class QuranDetailsScreen extends StatelessWidget {
             return buildEmptyWidget();
           }
 
-          return buildContentSuccess(
-            data,
+          return buildContentSuccess(  context, // أضف context هنا
+
+            snapshot.data!,
             surahName,
             surahNameEn: surahNameEn,
             transliteration: transliteration,
