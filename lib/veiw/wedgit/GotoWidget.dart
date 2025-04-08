@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../veiw_model/color/coloe.dart';
+import '../../veiw_model/helper/thems/coloe.dart';
 
 class GotoWidget extends StatelessWidget {
   final VoidCallback? onpressed;

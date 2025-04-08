@@ -25,7 +25,7 @@ var backgroundColor = Color(0xffe5f0f4);
 var primaryColor = Colors.teal;
 var secondaryColor = Color(0xff7bc496);
 
-// Dashboard color
+// Dashboard thems
 var blueColor = Color(0xff85a4e7);
 var redColor = Color(0xffd17db8);
 var purpleColor = Color(0xffb084d1);

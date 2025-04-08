@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../model/item.dart';
 import '../../model/JsonScreen.dart';
-import '../../veiw_model/color/coloe.dart';
+import '../../veiw_model/helper/thems/coloe.dart';
 import '../wedgit/CustomQuranPage.dart';
 
 class MyQuranPage extends StatelessWidget {

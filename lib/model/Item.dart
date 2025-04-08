@@ -7,6 +7,7 @@ class Item {
   final String surahTransliteration;
   final int startVerse;
   final int endVerse;
+  int versesCount; // مش final علشان نعدله لاحقًا
 
   Item({
     required this.page,
@@ -17,6 +18,7 @@ class Item {
     required this.surahTransliteration,
     required this.startVerse,
     required this.endVerse,
+    required this.versesCount,
   });
 
   factory Item.fromJson(Map<String, dynamic> json) {
@@ -27,6 +29,9 @@ class Item {
       imageUrl = 'assets/$imageUrl';
     }
 
+    final startVerse = start['verse'] as int;
+    final endVerse = json['end']['verse'] as int;
+
     return Item(
       page: json['page'] as int,
       imageUrl: imageUrl,
@@ -34,10 +39,9 @@ class Item {
       surahNameAr: start['name']['ar'] as String,
       surahNameEn: start['name']['en'] as String,
       surahTransliteration: start['name']['transliteration'] as String,
-      startVerse: start['verse'] as int,
-      endVerse: json['end']['verse'] as int,
+      startVerse: startVerse,
+      endVerse: endVerse,
+      versesCount: endVerse - startVerse + 1,
     );
   }
-
-  int get versesCount => endVerse - startVerse + 1;
 }

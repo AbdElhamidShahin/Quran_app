@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:quran_app/veiw/wedgit/CustomContainer.dart';
 
-import '../../veiw_model/color/coloe.dart' show blueColor, greenColor, purpleColor, redColor;
+import '../../veiw_model/helper/thems/coloe.dart';
+
 
 class Dashboard extends StatelessWidget {
   const Dashboard({Key? key, required this.height}) : super(key: key);

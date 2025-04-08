@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../../model/item.dart';
-
 Widget buildContentSuccess(
     BuildContext context,
     List<Item> pages,
@@ -9,31 +8,21 @@ Widget buildContentSuccess(
       String? transliteration,
     }) {
   return PageView.builder(
+    controller: PageController(viewportFraction: 1.1), // كل صفحة تأخذ 92% من العرض
     scrollDirection: Axis.horizontal,
     reverse: true,
     itemCount: pages.length,
     itemBuilder: (context, index) {
       final page = pages[index];
       return Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: SizedBox(
-          width: MediaQuery.of(context).size.width,
-          child: Column(
-            children: [
-              Expanded( // 👈 ده يخلي الصورة تتمدد وتاخد المساحة كلها
-                child: Image.asset(
-                  page.imageUrl,
-                  width: double.infinity, // 👈 تاخد العرض بالكامل
-                  fit: BoxFit.cover, // أو استخدم BoxFit.fitWidth حسب ما تحب
-                  errorBuilder: (ctx, err, _) => Container(
-                    color: Colors.grey[200],
-                    child: const Center(
-                      child: Icon(Icons.image_not_supported),
-                    ),
-                  ),
-                ),
-              ),
-            ],
+        padding: const EdgeInsets.symmetric(horizontal: 4.0), // هامش 8 بكسل
+        child: Image.asset(
+          page.imageUrl,
+          width: double.infinity,      // يملأ العرض المتاح
+          fit: BoxFit.fitWidth,        // يناسب العرض بدون قص
+          errorBuilder: (ctx, err, _) => Container(
+            color: Colors.grey[200],
+            child: const Center(child: Icon(Icons.image_not_supported)),
           ),
         ),
       );

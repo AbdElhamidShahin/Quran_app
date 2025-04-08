@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:quran_app/veiw/wedgit/Dashboard.dart' show Dashboard;
 import 'package:quran_app/veiw/wedgit/LastReadWidget.dart' show LastReadWidget;
 
-import '../../veiw_model/color/coloe.dart';
+import '../../veiw_model/helper/thems/coloe.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});

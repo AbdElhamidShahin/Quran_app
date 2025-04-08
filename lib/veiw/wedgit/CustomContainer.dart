@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:quran_app/veiw/wedgit/GotoWidget.dart';
-import 'package:quran_app/veiw_model/color/coloe.dart';
+
+import '../../veiw_model/helper/thems/coloe.dart' show titleStyle;
 
 class CustomContainer extends StatelessWidget {
   const CustomContainer({

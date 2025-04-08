@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import '../../veiw_model/color/coloe.dart';
+import '../../veiw_model/helper/thems/coloe.dart';
 import 'GotoWidget.dart';
 
 class LastReadWidget extends StatelessWidget {

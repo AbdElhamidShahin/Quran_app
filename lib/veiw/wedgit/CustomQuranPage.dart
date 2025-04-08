@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../model/item.dart';
-import '../../veiw_model/color/coloe.dart';
+import '../../veiw_model/helper/surahAyahCounts.dart';
+import '../../veiw_model/helper/thems/coloe.dart';
 import '../QuranDetailsScreen.dart';
 
 class CustomQuranPage extends StatelessWidget {
@@ -27,7 +28,6 @@ class CustomQuranPage extends StatelessWidget {
               transliteration: sura.surahTransliteration,
             ),
           ),
-
         );
       },
       child: Padding(
@@ -68,7 +68,7 @@ class CustomQuranPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    'عدد الآيات: ${sura.versesCount}', // هنا يتم عرض عدد الآيات
+                    'عدد الآيات: ${SurahAyahCounts[sura.surahNumber] ?? 'غير معروف'}',
                     style: TextStyle(
                       fontSize: 14,
                       color: Colors.grey[600],
@@ -86,15 +86,15 @@ class CustomQuranPage extends StatelessWidget {
                 children: [
                   Text(
                     sura.surahTransliteration,
-                    style:titleGreenStyle()
+                    style: titleGreenStyle(),
                   ),
-                    Text(
-                      sura.surahNameEn,
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.grey[500],
-                      ),
+                  Text(
+                    sura.surahNameEn,
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Colors.grey[500],
                     ),
+                  ),
                 ],
               ),
             ),
