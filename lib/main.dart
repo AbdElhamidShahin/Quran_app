@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
       ),
       home: const Directionality(
         textDirection: TextDirection.rtl,
-        child: MyQuranPage(),
+        child: HomePage(),
       ),
     );
   }

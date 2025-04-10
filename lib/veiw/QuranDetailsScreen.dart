@@ -1,21 +1,23 @@
 import 'package:flutter/material.dart';
 import '../model/item.dart';
 import '../model/JsonScreen.dart';
-import '../veiw_model/helper/thems/coloe.dart';
+import '../veiw_model/helper/thems/TextStyle.dart';
+import '../veiw_model/helper/thems/color.dart';
 import 'wedgit/buildLoadingShimmer.dart';
 import 'wedgit/buildErrorWidget.dart';
 import 'wedgit/buildEmptyWidget.dart';
 import 'wedgit/buildContentScess.dart';
 
 class QuranDetailsScreen extends StatelessWidget {
-  final int surahNumber; // ✅ بدل startPage
+  final int surahNumber;
+
   final String surahName;
   final String? surahNameEn;
   final String? transliteration;
 
   const QuranDetailsScreen({
     super.key,
-    required this.surahNumber, // ✅ تعديل هنا
+    required this.surahNumber,
     required this.surahName,
     this.surahNameEn,
     this.transliteration,
@@ -29,14 +31,12 @@ class QuranDetailsScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: backgroundColor,
         title: Column(
-          children: [Text("سوره ${surahName}", style: titleGreenStyle())],
+          children: [Text("سوره ${surahName}", style: appBarTitleStyle())],
         ),
         actions: [
           IconButton(
             onPressed: () {
               Navigator.pop(context);
-
-
             },
             icon: Icon(Icons.arrow_forward_outlined),
           ),
@@ -44,7 +44,7 @@ class QuranDetailsScreen extends StatelessWidget {
         leading: Center(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12),
-            child: Text("${surahNumber}",style: subtitleStyle(),),
+            child: Text("${surahNumber}", style: appBodyStyle()),
           ),
         ),
 

@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:quran_app/veiw/wedgit/Dashboard.dart' show Dashboard;
 import 'package:quran_app/veiw/wedgit/LastReadWidget.dart' show LastReadWidget;
 
-import '../../veiw_model/helper/thems/coloe.dart';
+import '../../veiw_model/helper/thems/TextStyle.dart';
+import '../../veiw_model/helper/thems/color.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -17,14 +18,16 @@ class HomePage extends StatelessWidget {
         backgroundColor: Colors.transparent,
         elevation: 0.0,
         centerTitle: true,
-        leading: Icon(Icons.menu, color: greenColor),
-        title: Text("myQuran", style: titleGreenStyle()),
         actions: [
-          CircleAvatar(
-            backgroundColor: blueColor,
-            backgroundImage: const AssetImage("assets/icons/moon.png"),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            child: IconButton(
+              onPressed: () {},
+              icon: Icon(Icons.menu, color: primaryColor, size: 28),
+            ),
           ),
         ],
+        title: Text("القرأن الكريم", style: appBarTitleStyle()),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -33,15 +36,18 @@ class HomePage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              SizedBox(height: 12),
+
               Padding(
                 padding: EdgeInsets.only(bottom: height * .01),
                 child: Center(
                   child: Image(
                     image: const AssetImage('assets/icons/logo.png'),
-                    width: width * .2,
+                    width: width * .3,
                   ),
                 ),
               ),
+              SizedBox(height: 12),
               LastReadWidget(height: height, width: width),
               Dashboard(height: height),
             ],
@@ -51,4 +57,3 @@ class HomePage extends StatelessWidget {
     );
   }
 }
-

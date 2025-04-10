@@ -85,9 +85,19 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-    - family: KFGQPC Uthmanic
+    - family: Cairo
       fonts:
-        - asset: assets/fonts/UthmanTNB_v2-0.ttf
+        - asset: assets/fonts/Cairo.ttf
+
+    - family: Lalezar
+      fonts:
+        - asset: assets/fonts/Lalezar.ttf
+
+    - family: Roboto
+      fonts:
+        - asset: assets/fonts/Roboto.ttf
+
+
 
   #         style: italic
   #   - family: Trajan Pro
