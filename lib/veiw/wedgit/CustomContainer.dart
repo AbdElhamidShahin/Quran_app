@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:quran_app/veiw/wedgit/GotoWidget.dart';
 
-import '../../veiw_model/helper/thems/coloe.dart' show titleStyle;
+import '../../veiw_model/helper/thems/TextStyle.dart';
+
 
 class CustomContainer extends StatelessWidget {
   const CustomContainer({
@@ -10,13 +11,13 @@ class CustomContainer extends StatelessWidget {
     required this.image,
     required this.title,
     required this.color,
-    this.onpressed,
+    required this.onpressed,
   }) : super(key: key);
 
   final double height1;
   final String image;
   final String title;
-  final Function? onpressed;
+  final VoidCallback? onpressed;
   final Color color;
 
   @override
@@ -26,6 +27,7 @@ class CustomContainer extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.only(top: width * .06),
       child: GestureDetector(
+        onTap: onpressed,
         child: Container(
           height: height1,
           width: width * .4,
@@ -66,7 +68,7 @@ class CustomContainer extends StatelessWidget {
                   Spacer(),
                   Padding(
                     padding: EdgeInsets.only(left: width * .02),
-                    child: Text(title, style: titleStyle()),
+                    child: Text(title, style: sectionHeaderStyle()),
                   ),
                   Padding(
                     padding: EdgeInsets.only(left: width * .02),

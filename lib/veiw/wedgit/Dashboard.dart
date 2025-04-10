@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:quran_app/veiw/wedgit/CustomContainer.dart';
 
-import '../../veiw_model/helper/thems/coloe.dart';
+import '../../veiw_model/helper/thems/color.dart';
+import '../screens/My_QuranPage.dart';
 
 
 class Dashboard extends StatelessWidget {
@@ -17,17 +18,20 @@ class Dashboard extends StatelessWidget {
           child: Column(
             children: [
               CustomContainer(
+
                 height1: height * .27,
                 image: 'assets/icons/quran.png',
                 title: "القرأن الكريم",
-                color: greenColor,
-                onpressed: () {},
+                color: quranColor,
+                onpressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>MyQuranPage()));
+                },
               ),
               CustomContainer(
                 height1: height * .20,
                 image: 'assets/icons/bookmark.png',
                 title: "المفضله",
-                color: purpleColor,
+                color: favoritesColor,
                 onpressed: () {},
               ),
               //CustomContainer(height1: height*.28, width1: width*.4)
@@ -42,13 +46,13 @@ class Dashboard extends StatelessWidget {
                 height1: height * .2,
                 image: 'assets/icons/prayer.png',
                 title: "أذكار الصباح والمساء",
-                color: redColor,
+                color: azkarColor, onpressed: () {  },
               ),
               CustomContainer(
                 height1: height * .27,
                 image: 'assets/icons/location.png',
                 title: "القبله",
-                color: blueColor,
+                color: qiblaColor,
                 onpressed: () {},
               ),
 

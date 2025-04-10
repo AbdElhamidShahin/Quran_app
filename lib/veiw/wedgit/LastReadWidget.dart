@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../veiw_model/helper/thems/coloe.dart';
+import '../../veiw_model/helper/thems/TextStyle.dart';
+import '../../veiw_model/helper/thems/color.dart';
 import 'GotoWidget.dart';
 
 class LastReadWidget extends StatelessWidget {
@@ -15,7 +16,7 @@ class LastReadWidget extends StatelessWidget {
       // onTap: () => Fluttertoast.showToast(msg: "This feature will be available in next release"),
       onTap: () {},
       child: Container(
-        height: height * .15,
+        height: height * .18,
         width: width,
         decoration: BoxDecoration(
           boxShadow: [
@@ -36,9 +37,9 @@ class LastReadWidget extends StatelessWidget {
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
-                secondaryColor.withOpacity(0.7),
+                favoritesColor.withOpacity(0.7),
 
-                primaryColor.withOpacity(0.7),
+                lastReadingColor.withOpacity(0.7),
               ],
             ),
             borderRadius: BorderRadius.circular(25),
@@ -55,12 +56,12 @@ class LastReadWidget extends StatelessWidget {
                 child: SizedBox(
                   width: width * .4,
                   child: ListTile(
-                    title: Text("آخر قراءة", style: titleStyle()),
+                    title: Text("آخر قراءة", style: sectionHeaderStyle()),
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('الرحمن', style: titleStyle()),
-                        Text('الآية رقم: 1', style: miniStyle()),
+                        Text('الرحمن', style: tafsirTextStyle()),
+                        Text('الآية رقم: 1', style: tafsirTextStyle()),
 
                         GotoWidget(),
                       ],
