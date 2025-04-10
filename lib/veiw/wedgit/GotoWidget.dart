@@ -13,7 +13,7 @@ class GotoWidget extends StatelessWidget {
       children: [
         Text('انتقل إلى', style: buttonTextStyle()),
         SizedBox(width: 7),
-        Icon(Icons.arrow_forward_ios, color: Colors.white, size: 13),
+        Icon(Icons.arrow_forward_ios, color: primaryColor, size: 13),
       ],
     );
   }

@@ -1,11 +1,20 @@
 import 'package:flutter/material.dart';
+import '../../model/Item.dart';
 import '../../veiw_model/helper/thems/TextStyle.dart';
 import '../../veiw_model/helper/thems/color.dart';
 import 'GotoWidget.dart';
+import '../QuranDetailsScreen.dart';
+import '../../veiw_model/helper/saveLastReadPage.dart';
+import '../../veiw_model/helper/saveLastReadPage.dart';
 
 class LastReadWidget extends StatelessWidget {
-  const LastReadWidget({Key? key, required this.height, required this.width})
-    : super(key: key);
+  const LastReadWidget({
+    Key? key,
+    required this.height,
+    required this.width,
+    this.sura,
+  }) : super(key: key);
+  final Item? sura;
 
   final double height;
   final double width;
@@ -13,8 +22,32 @@ class LastReadWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      // onTap: () => Fluttertoast.showToast(msg: "This feature will be available in next release"),
-      onTap: () {},
+      onTap: () async {
+        int? page = await getLastReadPage();
+
+        if (page != null) {
+          final surahInfo = getSurahInfoByPage(page, pagesQuran, allSurahs);
+
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => QuranDetailsScreen(
+                pageNumber: page,
+                surahNumber: surahInfo['surahNumber'],
+                surahName: surahInfo['surahNameAr'],
+              ),
+            ),
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('لا يوجد صفحة محفوظة'),
+              backgroundColor: Colors.redAccent,
+              behavior: SnackBarBehavior.floating,
+            ),
+          );
+        }
+      },
       child: Container(
         height: height * .18,
         width: width,
@@ -24,10 +57,10 @@ class LastReadWidget extends StatelessWidget {
               color: Colors.grey.withOpacity(0.5),
               spreadRadius: 5,
               blurRadius: 7,
-              offset: Offset(1.5, 3), // changes position of shadow
+              offset: const Offset(1.5, 3),
             ),
           ],
-          image: DecorationImage(
+          image: const DecorationImage(
             image: AssetImage('assets/icons/dashboard.png'),
             fit: BoxFit.fill,
           ),
@@ -38,7 +71,6 @@ class LastReadWidget extends StatelessWidget {
             gradient: LinearGradient(
               colors: [
                 favoritesColor.withOpacity(0.7),
-
                 lastReadingColor.withOpacity(0.7),
               ],
             ),
@@ -60,16 +92,18 @@ class LastReadWidget extends StatelessWidget {
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('الرحمن', style: tafsirTextStyle()),
-                        Text('الآية رقم: 1', style: tafsirTextStyle()),
-
-                        GotoWidget(),
+                        Text(
+                          'اضغط للمتابعة من حيث توقفت',
+                          style: tafsirTextStyle(),
+                        ),
+                        const SizedBox(height: 4),
+                        const GotoWidget(),
                       ],
                     ),
                   ),
                 ),
               ),
-              Spacer(),
+              const Spacer(),
               Padding(
                 padding: EdgeInsets.only(right: width * .04),
                 child: SizedBox(

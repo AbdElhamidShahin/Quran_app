@@ -50,7 +50,7 @@ class HomePage extends StatelessWidget {
               SizedBox(height: 12),
               LastReadWidget(height: height, width: width),
               Dashboard(height: height),
-            ],
+            SizedBox(height: 24,)],
           ),
         ),
       ),

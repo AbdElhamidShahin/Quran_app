@@ -69,7 +69,7 @@ import 'color.dart';
       fontFamily: 'Cairo',
       fontSize: 16,
       fontWeight: FontWeight.w600,
-      color: Colors.white,
+      color: textSecondary,
       letterSpacing: 0.5,
     );
   }
