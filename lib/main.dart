@@ -4,13 +4,10 @@ import 'package:quran_app/veiw/screens/HomePage.dart';
 import 'package:quran_app/veiw/screens/My_QuranPage.dart';
 import 'package:quran_app/veiw_model/helper/saveLastReadPage.dart';
 
-void main() async{
-  await loadQuranData(); // نحمل بيانات السور والصفحات أولًا
-
-  runApp(
-
-
-      const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await loadQuranData();
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {

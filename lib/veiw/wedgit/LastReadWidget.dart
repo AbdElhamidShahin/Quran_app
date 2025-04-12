@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../model/Item.dart';
 import '../../veiw_model/helper/thems/TextStyle.dart';
 import '../../veiw_model/helper/thems/color.dart';
@@ -23,29 +24,26 @@ class LastReadWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {
-        int? page = await getLastReadPage();
-
-        if (page != null) {
-          final surahInfo = getSurahInfoByPage(page, pagesQuran, allSurahs);
-
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => QuranDetailsScreen(
-                pageNumber: page,
-                surahNumber: surahInfo['surahNumber'],
-                surahName: surahInfo['surahNameAr'],
+        try {
+          int? page = await getLastReadPage();
+          if (page != null) {
+            final surahInfo = getSurahInfoByPage(page);
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder:
+                    (context) => QuranDetailsScreen(
+                      pageNumber: page,
+                      surahNumber: surahInfo['surahNumber'],
+                      surahName: surahInfo['surahNameAr'],
+                    ),
               ),
-            ),
-          );
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('لا يوجد صفحة محفوظة'),
-              backgroundColor: Colors.redAccent,
-              behavior: SnackBarBehavior.floating,
-            ),
-          );
+            );
+          }
+        } catch (e) {
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(e.toString())));
         }
       },
       child: Container(

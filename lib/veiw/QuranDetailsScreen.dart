@@ -46,8 +46,6 @@ class _QuranDetailsScreenState extends State<QuranDetailsScreen> {
     await prefs.setString('last_read_surah_name', widget.surahName);
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,7 +54,9 @@ class _QuranDetailsScreenState extends State<QuranDetailsScreen> {
       appBar: AppBar(
         backgroundColor: backgroundColor,
         title: Column(
-          children: [Text("سوره ${widget.surahName}", style: appBarTitleStyle())],
+          children: [
+            Text("سوره ${widget.surahName}", style: appBarTitleStyle()),
+          ],
         ),
         actions: [
           IconButton(
@@ -69,7 +69,7 @@ class _QuranDetailsScreenState extends State<QuranDetailsScreen> {
         leading: Center(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12),
-            child: Text("${widget.surahNumber}", style: appBodyStyle()),
+            child: Text("${widget.pageNumber}", style: appBodyStyle()),
           ),
         ),
 

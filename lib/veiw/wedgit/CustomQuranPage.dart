@@ -23,7 +23,8 @@ class CustomQuranPage extends StatelessWidget {
                   surahNumber: sura.surahNumber,
                   surahName: sura.surahNameAr,
                   surahNameEn: sura.surahNameEn,
-                  transliteration: sura.surahTransliteration, pageNumber: sura.page,
+                  transliteration: sura.surahTransliteration,
+                  pageNumber: sura.page,
                 ),
           ),
         );

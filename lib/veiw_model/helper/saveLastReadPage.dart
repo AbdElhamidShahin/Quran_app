@@ -1,17 +1,25 @@
-import 'dart:convert';
-
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
 
-late Map<String, dynamic> pagesQuran;
-late Map<String, dynamic> allSurahs;
-Map<String, dynamic> getSurahInfoByPage(
-    int page,
-    Map<String, dynamic> pagesQuran,
-    Map<String, dynamic> allSurahs,
-    ) {
+Map<String, dynamic> pagesQuran = {};
+Map<String, dynamic> allSurahs = {};
+
+Future<void> loadQuranData() async {
+  try {
+    final pagesJsonString = await rootBundle.loadString('assets/json/pagesQuran.json');
+    final surahsJsonString = await rootBundle.loadString('assets/json/allSurahs.json');
+    pagesQuran = json.decode(pagesJsonString);
+    allSurahs = json.decode(surahsJsonString);
+  } catch (e) {
+    debugPrint('Error loading Quran data: $e');
+  }
+}
+
+Map<String, dynamic> getSurahInfoByPage(int page) {
+  // إذا كانت الصفحة موجودة، إرجاع بياناتها
   final pageKey = page.toString();
-
   if (pagesQuran.containsKey(pageKey)) {
     final surahNumber = pagesQuran[pageKey]['surah'];
     final surahName = allSurahs[surahNumber.toString()]['name'];
@@ -21,38 +29,21 @@ Map<String, dynamic> getSurahInfoByPage(
     };
   }
 
+  // إذا كانت الصفحة غير موجودة، البحث عن أقرب صفحة أصغر (أو أكبر)
+  final nearestPage = pagesQuran.keys
+      .map((k) => int.parse(k))
+      .toList()
+      .reduce((a, b) => (a - page).abs() < (b - page).abs() ? a : b);
+
+  final surahNumber = pagesQuran[nearestPage.toString()]['surah'];
+  final surahName = allSurahs[surahNumber.toString()]['name'];
   return {
-    'surahNumber': 1,
-    'surahNameAr': 'الفاتحة',
+    'surahNumber': surahNumber,
+    'surahNameAr': surahName,
   };
-}
-
-Future<void> loadQuranData() async {
-  final pagesJsonString = await rootBundle.loadString('assets/json/pagesQuran.json');
-  final surahsJsonString = await rootBundle.loadString('assets/json/allSurahs.json');
-
-  pagesQuran = json.decode(pagesJsonString);
-  allSurahs = json.decode(surahsJsonString);
 }
 
 Future<int?> getLastReadPage() async {
   final prefs = await SharedPreferences.getInstance();
   return prefs.getInt('last_read_page');
 }
-
-Future<Map<String, dynamic>?> getLastReadData() async {
-  final prefs = await SharedPreferences.getInstance();
-  final page = prefs.getInt('last_read_page');
-  final surahNumber = prefs.getInt('last_read_surah');
-  final surahName = prefs.getString('last_read_surah_name');
-
-  if (page != null && surahNumber != null && surahName != null) {
-    return {
-      'page': page,
-      'surahNumber': surahNumber,
-      'surahName': surahName,
-    };
-  }
-  return null;
-}
-
