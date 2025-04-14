@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:quran_app/model/azkarModel/ItemAzkatr.dart';
+import 'package:quran_app/veiw/screens/azkarPage.dart';
+import 'package:quran_app/veiw/wedgit/CustomContainer.dart';
+
 import '../../veiw_model/helper/thems/color.dart';
-import '../wedgit/CustomContainer.dart';
 import '../screens/My_QuranPage.dart';
-import '../screens/azkarPage.dart';
 
 class Dashboard extends StatelessWidget {
-  const Dashboard({Key? key, required this.height, this.azkarCategory,}) : super(key: key);
-  final AzkarCategoryModel? azkarCategory;  // Make it nullable
+  const Dashboard({Key? key, required this.height}) : super(key: key);
 
   final double height;
 
@@ -32,11 +31,12 @@ class Dashboard extends StatelessWidget {
               ),
               CustomContainer(
                 height1: height * .20,
-                image: 'assets/icons/prayer.png',
-                title: "الصلاه",
+                image: 'assets/icons/bookmark.png',
+                title: "المفضله",
                 color: favoritesColor,
                 onpressed: () {},
               ),
+              //CustomContainer(height1: height*.28, width1: width*.4)
             ],
           ),
         ),
@@ -52,10 +52,7 @@ class Dashboard extends StatelessWidget {
                 onpressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
-                      builder: (context) => AzkarPage(
-                      ),
-                    ),
+                    MaterialPageRoute(builder: (context) => AzkarPage()),
                   );
                 },
               ),
@@ -66,6 +63,8 @@ class Dashboard extends StatelessWidget {
                 color: qiblaColor,
                 onpressed: () {},
               ),
+
+              //CustomContainer(height1: height*.28, width1: width*.4)
             ],
           ),
         ),
