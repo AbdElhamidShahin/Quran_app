@@ -107,11 +107,11 @@ import 'color.dart';
   // 11. نص الآية عند التحديد (إضافة جديدة)
    TextStyle selectedAyahStyle() {
     return TextStyle(
-      fontFamily: 'KFGQPC Uthmanic',
-      fontSize: 24,
-      height: 2.2,
-      color: primaryColor, // تم التغيير إلى primaryColor
-      backgroundColor: primaryColor.withOpacity(0.1),
+      fontFamily: 'Lalezar',
+      fontSize: 20,
+      fontWeight: FontWeight.w500,
+      height: 1.8,
+      color: primaryDark, // تم التغيير إلى primaryColor
     );
   }
 
@@ -129,16 +129,16 @@ import 'color.dart';
    TextStyle sajdaMarkerStyle() {
     return TextStyle(
       fontFamily: 'Cairo',
-      fontSize: 14,
-      fontWeight: FontWeight.bold,
-      color: primaryColor, // تم التغيير إلى primaryColor
+      fontSize: 18,
+      fontWeight: FontWeight.w700,
+      color: primaryColor // تم التغيير إلى primaryColor
     );
   }
 
   // 14. أسلوب خاص بأرقام الأجزاء (إضافة جديدة)
    TextStyle juzNumberStyle() {
     return TextStyle(
-      fontFamily: 'Lalezar',
+      fontFamily: 'Roboto',
       fontSize: 20,
       color: accentColor, // تم التغيير إلى accentColor
     );

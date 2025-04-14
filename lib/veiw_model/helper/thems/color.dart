@@ -8,6 +8,7 @@ const Color primaryColor = Color(
 ); // اللون الرئيسي (أخضر-أزرق روحاني)
 const Color primaryLight = Color(0xFF9AD0C2); // فاتح من اللون الرئيسي
 const Color primaryDark = Color(0xFF1A6E7A); // غامق من اللون الرئيسي
+const Color continar = Color(0xFF88BCA4); // غامق من اللون الرئيسي
 
 // 🎨 الألوان الثانوية (Secondary Colors)
 const Color accentColor = Color(0xFFF1B24A); // لون مميز (ذهبي دافئ)
@@ -28,6 +29,8 @@ const Color successColor = Color(0xFF4CAF50); // نجاح
 const Color errorColor = Color(0xFFF44336); // خطأ
 const Color warningColor = Color(0xFFFF9800); // تحذير
 const Color infoColor = Color(0xFF2196F3); // معلومات
+
+
 
 // ✨ ألوان إضافية خاصة بالقرآن
 const Color ayahHighlight = Color(0xFFE8F4EA); // تمييز الآيات

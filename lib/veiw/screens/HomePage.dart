@@ -14,9 +14,10 @@ class HomePage extends StatelessWidget {
     var height = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: backgroundColor,
-      appBar: AppBar(
+      appBar: AppBar(      scrolledUnderElevation: 0,
+        elevation: 0,
+        automaticallyImplyLeading: false,
         backgroundColor: Colors.transparent,
-        elevation: 0.0,
         centerTitle: true,
         actions: [
           Padding(

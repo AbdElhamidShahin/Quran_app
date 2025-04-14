@@ -6,12 +6,8 @@ import 'item.dart';
 Future<List<Item>> fetchSuraDetails() async {
   final String response = await rootBundle.loadString('assets/pagesQuran.json');
   final List<dynamic> data = json.decode(response) as List<dynamic>;
-
-  // خريطة تجمع عدد الآيات لكل سورة
   final Map<int, int> versesCountMap = {};
-  // خريطة تجمع صفحات كل سورة عشان نختار أقل صفحة كـ 'page'
   final Map<int, int> firstPageMap = {};
-  // خريطة لحفظ الـ JSON الخاص بأول صفحة (لبناء الـ Item)
   final Map<int, Map<String, dynamic>> firstPageJsonMap = {};
 
   for (var page in data) {
@@ -20,10 +16,8 @@ Future<List<Item>> fetchSuraDetails() async {
     final ev = page['end']['verse'] as int;
     final count = ev - sv + 1;
 
-    // جمع الآيات
     versesCountMap[sn] = (versesCountMap[sn] ?? 0) + count;
 
-    // تحديد أول صفحة (أقل رقم)
     final pg = page['page'] as int;
     if (!firstPageMap.containsKey(sn) || pg < firstPageMap[sn]!) {
       firstPageMap[sn] = pg;
@@ -31,7 +25,6 @@ Future<List<Item>> fetchSuraDetails() async {
     }
   }
 
-  // بناء الـ Item لكل سورة
   final List<Item> surahList = [];
   versesCountMap.forEach((sn, totalCount) {
     final jsonPage = firstPageJsonMap[sn]!;
@@ -40,11 +33,9 @@ Future<List<Item>> fetchSuraDetails() async {
     surahList.add(item);
   });
 
-  // لو حابب ترتب حسب رقم السورة
   surahList.sort((a, b) => a.surahNumber.compareTo(b.surahNumber));
   return surahList;
 }
-
 
 Future<List<Item>> fetchQuranPagesBySurah(int surahNumber) async {
   try {
