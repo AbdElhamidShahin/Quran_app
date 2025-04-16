@@ -8,18 +8,18 @@ Widget buildContentSuccess(
       String? transliteration,
     }) {
   return PageView.builder(
-    controller: PageController(viewportFraction: 1.1), // كل صفحة تأخذ 92% من العرض
+    controller: PageController(viewportFraction: 1.1),
     scrollDirection: Axis.horizontal,
     reverse: true,
     itemCount: pages.length,
     itemBuilder: (context, index) {
       final page = pages[index];
       return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 4.0), // هامش 8 بكسل
+        padding: const EdgeInsets.symmetric(horizontal: 4.0),
         child: Image.asset(
           page.imageUrl,
-          width: double.infinity,      // يملأ العرض المتاح
-          fit: BoxFit.fitWidth,        // يناسب العرض بدون قص
+          width: double.infinity,
+          fit: BoxFit.fitWidth,
           errorBuilder: (ctx, err, _) => Container(
             color: Colors.grey[200],
             child: const Center(child: Icon(Icons.image_not_supported)),

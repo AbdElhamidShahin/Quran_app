@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-Widget buildErrorWidget(String error) {
+Widget buildErrorWidget(String error, {VoidCallback? onRetry}) {
   return Center(
     child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         const Icon(Icons.error_outline, size: 48, color: Colors.red),
         const SizedBox(height: 16),
-        Text('Error loading content',
+        Text('حدث خطأ أثناء تحميل البيانات',
             style: TextStyle(
               fontSize: 18,
               color: Colors.grey[700],
@@ -21,10 +21,8 @@ Widget buildErrorWidget(String error) {
             )),
         const SizedBox(height: 16),
         ElevatedButton(
-          onPressed: () {
-            // Implement retry logic if needed
-          },
-          child: const Text('Try Again'),
+          onPressed: onRetry,
+          child: const Text('حاول مرة أخرى'),
         ),
       ],
     ),

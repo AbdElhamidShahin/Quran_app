@@ -4,6 +4,7 @@ import 'package:quran_app/veiw/wedgit/CustomContainer.dart';
 
 import '../../veiw_model/helper/thems/color.dart';
 import '../screens/My_QuranPage.dart';
+import '../screens/salaScreen.dart';
 
 class Dashboard extends StatelessWidget {
   const Dashboard({Key? key, required this.height}) : super(key: key);
@@ -34,7 +35,11 @@ class Dashboard extends StatelessWidget {
                 image: 'assets/icons/bookmark.png',
                 title: "المفضله",
                 color: favoritesColor,
-                onpressed: () {},
+                onpressed: () {Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => PrayerTimesScreen()),
+                );
+                },
               ),
               //CustomContainer(height1: height*.28, width1: width*.4)
             ],
