@@ -1,7 +1,12 @@
 import 'package:dio/dio.dart';
-
 class PrayerService {
-  final Dio _dio = Dio(BaseOptions(baseUrl: 'https://api.aladhan.com/v1'));
+  final Dio _dio;
+
+  PrayerService({Dio? dio}) : _dio = dio ?? Dio(BaseOptions(
+    baseUrl: 'https://api.aladhan.com/v1',
+    connectTimeout: const Duration(seconds: 5),
+    receiveTimeout: const Duration(seconds: 5),
+  ));
 
   Future<Map<String, String>> fetchPrayerTimes(double lat, double lng) async {
     try {
@@ -12,41 +17,27 @@ class PrayerService {
       });
 
       if (response.statusCode == 200) {
-        final data = response.data['data']['timings'];
-
-        const List<String> prayerOrder = [
-          'الفجر',
-          'الظهر',
-          'العصر',
-          'المغرب',
-          'العشاء',
-        ];
-
-        const Map<String, String> prayerKeys = {
-          'الفجر': 'Fajr',
-          'الظهر': 'Dhuhr',
-          'العصر': 'Asr',
-          'المغرب': 'Maghrib',
-          'العشاء': 'Isha',
-        };
-
-        Map<String, String> prayerTimes = {};
-
-        for (var prayer in prayerOrder) {
-          final prayerKey = prayerKeys[prayer];
-          if (prayerKey != null && data.containsKey(prayerKey)) {
-            prayerTimes[prayer] = data[prayerKey];
-          } else {
-            prayerTimes[prayer] = 'غير متوفر';
-          }
-        }
-
-        return prayerTimes;
-      } else {
-        throw 'حدث خطأ أثناء جلب البيانات: ${response.statusCode}';
+        return _parsePrayerTimes(response.data['data']['timings']);
       }
+      throw 'خطأ في الاستجابة: ${response.statusCode}';
     } catch (e) {
-      throw 'حدث خطأ أثناء جلب مواقيت الصلاة: $e';
+      throw 'فشل في جلب مواقيت الصلاة: $e';
     }
+  }
+
+  Map<String, String> _parsePrayerTimes(Map<String, dynamic> timings) {
+    const prayerMapping = {
+      'الفجر': 'Fajr',
+      'الظهر': 'Dhuhr',
+      'العصر': 'Asr',
+      'المغرب': 'Maghrib',
+      'العشاء': 'Isha',
+    };
+
+    final result = <String, String>{};
+    prayerMapping.forEach((key, value) {
+      result[key] = timings[value] ?? '--:--';
+    });
+    return result;
   }
 }

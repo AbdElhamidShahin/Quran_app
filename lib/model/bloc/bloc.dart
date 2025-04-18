@@ -4,30 +4,32 @@ import '../PrayerTime.dart';
 import '../api/apiServise.dart';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
-
+// في ملف bloc.dart
 class PrayerBloc extends Bloc<PrayerEvent, PrayerState> {
   final PrayerService prayerService;
   final Connectivity connectivity;
 
   PrayerBloc(this.prayerService, this.connectivity) : super(PrayerInitial()) {
-    on<FetchPrayerTimes>((event, emit) async {
-      emit(PrayerLoadingState());
+    on<FetchPrayerTimes>(_onFetchPrayerTimes);
+  }
 
-      final connectivityResult = await connectivity.checkConnectivity();
-      if (connectivityResult == ConnectivityResult.none) {
-        emit(PrayerErrorState('لا يوجد اتصال بالإنترنت'));
-        return;
-      }
+  Future<void> _onFetchPrayerTimes(
+      FetchPrayerTimes event,
+      Emitter<PrayerState> emit,
+      ) async {
+    emit(PrayerLoadingState());
 
-      try {
-        final timings = await prayerService.fetchPrayerTimes(
-          event.lat,
-          event.lng,
-        );
-        emit(PrayerLoadedState(timings));
-      } catch (e) {
-        emit(PrayerErrorState(e.toString()));
-      }
-    });
+    final connectivityResult = await connectivity.checkConnectivity();
+    if (connectivityResult == ConnectivityResult.none) {
+      emit(PrayerErrorState('لا يوجد اتصال بالإنترنت'));
+      return;
+    }
+
+    try {
+      final timings = await prayerService.fetchPrayerTimes(event.lat, event.lng);
+      emit(PrayerLoadedState(timings));
+    } catch (e) {
+      emit(PrayerErrorState(e.toString()));
+    }
   }
 }
