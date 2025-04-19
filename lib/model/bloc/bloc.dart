@@ -38,8 +38,4 @@ class PrayerBloc extends Bloc<PrayerEvent, PrayerState> {
 
 
 
-
-
-
-
 }

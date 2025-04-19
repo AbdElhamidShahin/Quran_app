@@ -1,15 +1,13 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import '../../model/PrayerTime.dart';
 import '../../model/bloc/bloc.dart';
 import '../../model/bloc/states.dart';
 import '../../veiw_model/helper/Position/getPosition.dart';
 import '../wedgit/buildLoadingShimmer.dart';
-import '../wedgit/buildPrayerTimesUI.dart'; // استيراد الـ BLoC الصحيح
+import '../wedgit/buildPrayerTimesUI.dart';
 
 class PrayerTimesScreen extends StatefulWidget {
   const PrayerTimesScreen({super.key});
@@ -49,7 +47,7 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
       );
     } catch (e) {
       context.read<PrayerBloc>().add(
-        FetchPrayerTimes(lat: 30.0444, lng: 31.2357), // افتراضياً القاهرة
+        FetchPrayerTimes(lat: 30.0444, lng: 31.2357),
       );
       ScaffoldMessenger.of(
         context,

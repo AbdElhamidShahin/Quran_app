@@ -15,3 +15,19 @@ class PrayerErrorState extends PrayerState {
 
   PrayerErrorState(this.message);
 }
+class addNumberState extends PrayerState {
+
+ final int count ;
+
+  addNumberState({required this.count});
+
+
+}
+class resultcountState extends PrayerState {
+
+  final int count ;
+
+  resultcountState({required this.count});
+
+
+}

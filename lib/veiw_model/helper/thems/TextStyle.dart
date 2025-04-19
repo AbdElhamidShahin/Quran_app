@@ -96,9 +96,9 @@ import 'color.dart';
 
   // 10. خط المصحف العثماني (مخصص لآيات القرآن)
    TextStyle quranAyahStyle() {
-    return const TextStyle(
-      fontFamily: 'KFGQPC Uthmanic',
-      fontSize: 24,
+    return  TextStyle(
+      fontSize: 50,
+      fontWeight: FontWeight.bold,
       height: 2.2,
       color: textPrimary, // تم التغيير إلى textPrimary
     );
@@ -139,7 +139,9 @@ import 'color.dart';
    TextStyle juzNumberStyle() {
     return TextStyle(
       fontFamily: 'Roboto',
-      fontSize: 20,
-      color: accentColor, // تم التغيير إلى accentColor
+      fontSize: 32,
+      fontWeight: FontWeight.bold,
+
+      color: primaryDark, // تم التغيير إلى accentColor
     );
   }

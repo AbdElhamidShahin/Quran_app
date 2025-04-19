@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../../model/Item.dart';
 import '../../veiw_model/helper/thems/TextStyle.dart';
 import '../../veiw_model/helper/thems/color.dart';
 import 'GotoWidget.dart';
 import '../QuranDetailsScreen.dart';
-import '../../veiw_model/helper/saveLastReadPage.dart';
 import '../../veiw_model/helper/saveLastReadPage.dart';
 
 class LastReadWidget extends StatelessWidget {
