@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quran_app/model/bloc/states.dart';
-
 import '../../model/bloc/BlocCounterSapha.dart';
 import '../../veiw_model/helper/thems/TextStyle.dart';
 import '../../veiw_model/helper/thems/color.dart';
@@ -14,8 +13,7 @@ class SephaScreen extends StatelessWidget {
       textDirection: TextDirection.ltr,
       child: Scaffold(
         backgroundColor: backgroundColor,
-        appBar: CustomAppBar(title: 'المسبحه'),
-
+        appBar: CustomAppBar(title: 'المسبحة'),
         body: BlocProvider(
           create: (BuildContext context) => CounterCubit(),
           child: BlocConsumer<CounterCubit, PrayerState>(
@@ -24,52 +22,86 @@ class SephaScreen extends StatelessWidget {
 
               return Center(
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    SizedBox(height: 50),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 12,
-                          horizontal: 24,
+                    Column(
+                      children: [
+                        Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            GestureDetector(
+                onTap: cubit.addNumber,
+                              child: Container(
+                                height: 280,
+                                width: 280,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(140),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: primaryColor.withOpacity(0.2),
+                                      blurRadius: 20,
+                                      spreadRadius: 5,
+                                    ),
+                                  ],
+                                ),
+                                child: ColorFiltered(
+                                  colorFilter: ColorFilter.mode(
+                                    primaryColor.withOpacity(0.7),
+                                    BlendMode.srcIn,
+                                  ),
+                                  child: Image.asset('assets/sebhaBody.png'),
+                                ),
+                              ),
+                            ),
+                            Text(
+                              "${cubit.Options()}",
+                              style: juzNumberStyle().copyWith(
+                                fontSize: 28,
+                                color: Colors.white,
+                                shadows: [
+                                  Shadow(
+                                    color: Colors.black.withOpacity(0.5),
+                                    blurRadius: 10,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
-                        child: Text(
-                          "${cubit.Options()}",
-                          style: juzNumberStyle(),
+                        SizedBox(height: 30),
+                        // العداد
+                        Text(
+                          '${cubit.count}/99',
+                          style: quranAyahStyle().copyWith(
+                            fontSize: 36,
+                            fontWeight: FontWeight.bold,
+                            color: primaryColor,
+                          ),
                         ),
-                      ),
+                      ],
                     ),
-                    Text('${cubit.count}', style: quranAyahStyle()),
 
-                    GestureDetector(
-                      onTap: cubit.addNumber,
-
-                      child: Container(
-                        height: 160,
-                        width: 160,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(100),
-                          color: primaryLight,
-                        ),
-                      ),
-                    ),
-                    Text('${cubit.count}/99', style: quranAyahStyle()),
+                    // زر الإعادة
                     GestureDetector(
                       onTap: cubit.resultcount,
-                      child: Container(
+                      child: AnimatedContainer(
+                        duration: Duration(milliseconds: 300),
+                        padding: EdgeInsets.all(15),
                         decoration: BoxDecoration(
                           color: Colors.white,
-                          borderRadius: BorderRadius.circular(20),
+                          shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.3),
+                              spreadRadius: 2,
+                              blurRadius: 10,
+                            ),
+                          ],
                         ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 12,
-                            horizontal: 24,
-                          ),
-                          child: Text('اعاده التعيين', style: juzNumberStyle()),
+                        child: Icon(
+                          Icons.refresh,
+                          size: 40,
+                          color: primaryColor,
                         ),
                       ),
                     ),

@@ -48,6 +48,7 @@ dependencies:
   intl: ^0.18.1
   lottie: ^3.3.1
 
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -80,6 +81,8 @@ flutter:
     - assets/data/quran_image/
     - assets/data/quran_image/
     - assets/Animation - 1745055052923.json
+    - assets/sebhaBody.png
+    - assets/Animation - 1745081494915.json
 
 
 
@@ -119,3 +122,5 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
+assets/sebhaBody:
+  png:
