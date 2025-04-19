@@ -5,6 +5,7 @@ import 'package:quran_app/veiw/wedgit/CustomContainer.dart';
 import '../../veiw_model/helper/thems/color.dart';
 import '../screens/My_QuranPage.dart';
 import '../screens/salaScreen.dart';
+import '../screens/sephaScreen.dart';
 
 class Dashboard extends StatelessWidget {
   const Dashboard({Key? key, required this.height}) : super(key: key);
@@ -33,7 +34,7 @@ class Dashboard extends StatelessWidget {
               CustomContainer(
                 height1: height * .20,
                 image: 'assets/icons/bookmark.png',
-                title: "المفضله",
+                title: "مواقيت الصلاه ",
                 color: favoritesColor,
                 onpressed: () {Navigator.push(
                   context,
@@ -64,9 +65,12 @@ class Dashboard extends StatelessWidget {
               CustomContainer(
                 height1: height * .27,
                 image: 'assets/icons/location.png',
-                title: "القبله",
+                title: "المسبحه",
                 color: qiblaColor,
-                onpressed: () {},
+                onpressed: () {     Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SephaScreen()),
+                );},
               ),
 
               //CustomContainer(height1: height*.28, width1: width*.4)

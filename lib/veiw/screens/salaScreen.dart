@@ -6,6 +6,8 @@ import '../../model/PrayerTime.dart';
 import '../../model/bloc/bloc.dart';
 import '../../model/bloc/states.dart';
 import '../../veiw_model/helper/Position/getPosition.dart';
+import '../../veiw_model/helper/thems/color.dart';
+import '../wedgit/CustomAppBar.dart';
 import '../wedgit/buildLoadingShimmer.dart';
 import '../wedgit/buildPrayerTimesUI.dart';
 
@@ -128,7 +130,8 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('مواقيت الصلاة'), centerTitle: true),
+      backgroundColor:backgroundColor ,
+      appBar: CustomAppBar(title: 'مواقيت الصلاه'),
       body: BlocBuilder<PrayerBloc, PrayerState>(
         builder: (context, state) {
           if (state is PrayerLoadingState) {

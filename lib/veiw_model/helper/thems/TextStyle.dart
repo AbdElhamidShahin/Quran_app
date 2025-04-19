@@ -88,9 +88,9 @@ import 'color.dart';
    TextStyle surahNumberCircleStyle() {
     return TextStyle(
       fontFamily: 'Cairo',
-      fontSize: 18,
-      fontWeight: FontWeight.bold,
-      color: Colors.white,
+      fontSize: 22,
+      fontWeight: FontWeight.w500,
+      color: Colors.black,
     );
   }
 

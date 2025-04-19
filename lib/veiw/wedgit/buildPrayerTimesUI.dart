@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../../veiw_model/helper/thems/TextStyle.dart';
+import '../../veiw_model/helper/thems/color.dart';
+
 Widget buildPrayerTimesUI(
   Map<String, String> times,
   String nextPrayerName,
@@ -18,6 +21,8 @@ Widget buildPrayerTimesUI(
     padding: const EdgeInsets.all(16),
     child: Column(
       children: [
+        const SizedBox(height: 30),
+
         Card(
           elevation: 4,
           shape: RoundedRectangleBorder(
@@ -43,7 +48,7 @@ Widget buildPrayerTimesUI(
                 const SizedBox(height: 8),
                 Text(
                   'متبقي حتى صلاة $nextPrayerName',
-                  style: const TextStyle(fontSize: 14, color: Colors.grey),
+                  style: const TextStyle(fontSize: 16, color: Colors.grey),
                 ),
                 const SizedBox(height: 4),
                 Text(
@@ -54,7 +59,7 @@ Widget buildPrayerTimesUI(
             ),
           ),
         ),
-        const SizedBox(height: 20),
+        const SizedBox(height: 50),
         Expanded(
           child: ListView.builder(
             itemCount: orderedPrayers.length,
@@ -63,23 +68,21 @@ Widget buildPrayerTimesUI(
               return Container(
                 margin: const EdgeInsets.only(bottom: 8),
                 decoration: BoxDecoration(
-                  color: Colors.grey[100],
+                  color: ayahHighlight,
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: ListTile(
                   title: Text(
-                    prayer['name']!,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                    ),
-                  ),
-                  trailing: Text(
                     prayer['time']!,
                     style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600,
                     ),
+                  ),
+
+                  trailing: Text(
+                    prayer['name']!,
+                    style: surahNumberCircleStyle(),
                   ),
                 ),
               );

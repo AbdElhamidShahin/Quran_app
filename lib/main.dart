@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:quran_app/veiw/screens/HomePage.dart';
-import 'package:quran_app/veiw/screens/sephaScreen.dart';
 import 'package:quran_app/veiw_model/helper/saveLastReadPage.dart';
 
 import 'model/ItemProvider.dart';
@@ -39,9 +38,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home:  Directionality(
+      home: const Directionality(
         textDirection: TextDirection.rtl,
-        child: SephaScreen(),
+        child: HomePage(),
       ),
     );
   }
