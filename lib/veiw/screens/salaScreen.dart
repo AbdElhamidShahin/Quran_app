@@ -3,9 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
 import '../../model/PrayerTime.dart';
 import '../../model/bloc/bloc.dart';
-import '../../model/bloc/states.dart'; // استيراد الـ BLoC الصحيح
+import '../../model/bloc/states.dart';
+import '../../veiw_model/helper/Position/getPosition.dart';
+import '../wedgit/buildLoadingShimmer.dart';
+import '../wedgit/buildPrayerTimesUI.dart'; // استيراد الـ BLoC الصحيح
 
 class PrayerTimesScreen extends StatefulWidget {
   const PrayerTimesScreen({super.key});
@@ -23,7 +27,7 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
   @override
   void initState() {
     super.initState();
-    _fetchData();
+    fetchData();
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (nextPrayerName.isNotEmpty) {
         _calculateNextPrayerTimes();
@@ -37,9 +41,9 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
     super.dispose();
   }
 
-  Future<void> _fetchData() async {
+  Future<void> fetchData() async {
     try {
-      final position = await _getPosition();
+      final position = await getPosition();
       context.read<PrayerBloc>().add(
         FetchPrayerTimes(lat: position.latitude, lng: position.longitude),
       );
@@ -47,30 +51,12 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
       context.read<PrayerBloc>().add(
         FetchPrayerTimes(lat: 30.0444, lng: 31.2357), // افتراضياً القاهرة
       );
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(e.toString())),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(e.toString())));
     }
   }
 
-  Future<Position> _getPosition() async {
-    if (!await Geolocator.isLocationServiceEnabled()) {
-      throw 'يجب تفعيل خدمة الموقع';
-    }
-    LocationPermission permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        throw 'تم رفض إذن الوصول للموقع';
-      }
-    }
-
-    if (permission == LocationPermission.deniedForever) {
-      throw 'تم رفض إذن الموقع بشكل دائم، يرجى تفعيله من الإعدادات';
-    }
-
-    return await Geolocator.getCurrentPosition();
-  }
 
   void _calculateNextPrayerTimes() {
     final now = DateTime.now();
@@ -94,7 +80,13 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
         final hour = int.parse(timeParts[0]);
         final minute = int.parse(timeParts[1]);
 
-        var prayerDateTime = DateTime(now.year, now.month, now.day, hour, minute);
+        var prayerDateTime = DateTime(
+          now.year,
+          now.month,
+          now.day,
+          hour,
+          minute,
+        );
 
         if (prayerDateTime.isBefore(now)) {
           if (prayer['name'] == 'العشاء') {
@@ -102,7 +94,13 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
             if (fajrTime != null && fajrTime.length == 2) {
               final fajrHour = int.parse(fajrTime[0]);
               final fajrMinute = int.parse(fajrTime[1]);
-              prayerDateTime = DateTime(now.year, now.month, now.day + 1, fajrHour, fajrMinute);
+              prayerDateTime = DateTime(
+                now.year,
+                now.month,
+                now.day + 1,
+                fajrHour,
+                fajrMinute,
+              );
               nextPrayer = prayersInOrder[0]['name']!;
               nextPrayerDateTime = prayerDateTime;
               break;
@@ -111,7 +109,8 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
           continue;
         }
 
-        if (nextPrayerDateTime == null || prayerDateTime.isBefore(nextPrayerDateTime)) {
+        if (nextPrayerDateTime == null ||
+            prayerDateTime.isBefore(nextPrayerDateTime)) {
           nextPrayerDateTime = prayerDateTime;
           nextPrayer = prayer['name']!;
         }
@@ -131,14 +130,11 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('مواقيت الصلاة'),
-        centerTitle: true,
-      ),
+      appBar: AppBar(title: const Text('مواقيت الصلاة'), centerTitle: true),
       body: BlocBuilder<PrayerBloc, PrayerState>(
         builder: (context, state) {
           if (state is PrayerLoadingState) {
-            return const Center(child: CircularProgressIndicator());
+            return  Center(child: buildLoadingShimmer());
           } else if (state is PrayerLoadedState) {
             if (_prayerTimes != state.times) {
               _prayerTimes = state.times;
@@ -146,110 +142,36 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
                 _calculateNextPrayerTimes();
               });
             }
-            return _buildPrayerTimesUI(state.times);
+            return buildPrayerTimesUI(
+              state.times,
+              nextPrayerName,
+              remainingTime,
+            );
           } else if (state is PrayerErrorState) {
             return Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(state.message),
+                  Lottie.asset('assets/Animation - 1745055052923.json', width: 250, height: 250),
                   const SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: _fetchData,
-                    child: const Text('إعادة المحاولة'),
+                  const Text(
+                    'لا يوجد اتصال بالإنترنت',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 10),
+                  const Text(
+                    'يرجى التحقق من الشبكة والمحاولة مرة أخرى',
+                    style: TextStyle(fontSize: 14, color: Colors.grey),
                   ),
                 ],
               ),
             );
           }
-          return const Center(child: CircularProgressIndicator());
+          return  Center(
+
+            child: buildLoadingShimmer(),
+          );
         },
-      ),
-    );
-  }
-
-  Widget _buildPrayerTimesUI(Map<String, String> times) {
-    final orderedPrayers = [
-      {'name': 'العشاء', 'time': times['العشاء'] ?? '--:--'},
-      {'name': 'المغرب', 'time': times['المغرب'] ?? '--:--'},
-      {'name': 'العصر', 'time': times['العصر'] ?? '--:--'},
-      {'name': 'الظهر', 'time': times['الظهر'] ?? '--:--'},
-      {'name': 'الفجر', 'time': times['الفجر'] ?? '--:--'},
-    ];
-
-    return Container(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        children: [
-          Card(
-            elevation: 4,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                children: [
-                  const Text(
-                    'الوقت الحالي',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    DateFormat('hh:mm a').format(DateTime.now()),
-                    style: const TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.teal,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    'متبقي حتى صلاة $nextPrayerName',
-                    style: const TextStyle(fontSize: 14, color: Colors.grey),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    '${remainingTime.inHours.toString().padLeft(2, '0')}:${(remainingTime.inMinutes % 60).toString().padLeft(2, '0')}:${(remainingTime.inSeconds % 60).toString().padLeft(2, '0')}',
-                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          const SizedBox(height: 20),
-          Expanded(
-            child: ListView.builder(
-              itemCount: orderedPrayers.length,
-              itemBuilder: (context, index) {
-                final prayer = orderedPrayers[index];
-                return Container(
-                  margin: const EdgeInsets.only(bottom: 8),
-                  decoration: BoxDecoration(
-                    color: Colors.grey[100],
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: ListTile(
-                    title: Text(
-                      prayer['name']!,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                      ),
-                    ),
-                    trailing: Text(
-                      prayer['time']!,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
-        ],
       ),
     );
   }

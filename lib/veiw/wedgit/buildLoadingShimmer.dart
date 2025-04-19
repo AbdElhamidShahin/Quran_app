@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 Widget buildLoadingShimmer() {
   return ListView.builder(
-    itemCount: 10,
+    itemCount: 8,
     itemBuilder: (context, index) {
       return Container(
         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),

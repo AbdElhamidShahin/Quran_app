@@ -1,10 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quran_app/model/bloc/states.dart';
 import '../PrayerTime.dart';
 import '../api/apiServise.dart';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
-// في ملف bloc.dart
 class PrayerBloc extends Bloc<PrayerEvent, PrayerState> {
   final PrayerService prayerService;
   final Connectivity connectivity;
@@ -32,4 +33,13 @@ class PrayerBloc extends Bloc<PrayerEvent, PrayerState> {
       emit(PrayerErrorState(e.toString()));
     }
   }
+
+
+
+
+
+
+
+
+
 }
