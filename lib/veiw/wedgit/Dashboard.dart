@@ -36,10 +36,13 @@ class Dashboard extends StatelessWidget {
                 image: 'assets/icons/bookmark.png',
                 title: "مواقيت الصلاه ",
                 color: favoritesColor,
-                onpressed: () {Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => PrayerTimesScreen()),
-                );
+                onpressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => PrayerTimesScreen(),
+                    ),
+                  );
                 },
               ),
               //CustomContainer(height1: height*.28, width1: width*.4)
@@ -52,7 +55,19 @@ class Dashboard extends StatelessWidget {
             children: [
               CustomContainer(
                 height1: height * .2,
-                image: 'assets/icons/prayer.png',
+                image: 'assets/icons/unnamed.png',
+                title: "المسبحه",
+                color: qiblaColor,
+                onpressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => SephaScreen()),
+                  );
+                },
+              ),
+              CustomContainer(
+                height1: height * .27,
+                image: 'assets/icons/azkr.png',
                 title: "أذكار الصباح والمساء",
                 color: azkarColor,
                 onpressed: () {
@@ -61,16 +76,6 @@ class Dashboard extends StatelessWidget {
                     MaterialPageRoute(builder: (context) => AzkarPage()),
                   );
                 },
-              ),
-              CustomContainer(
-                height1: height * .27,
-                image: 'assets/icons/location.png',
-                title: "المسبحه",
-                color: qiblaColor,
-                onpressed: () {     Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => SephaScreen()),
-                );},
               ),
 
               //CustomContainer(height1: height*.28, width1: width*.4)

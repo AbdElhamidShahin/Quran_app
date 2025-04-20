@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter/material.dart';
 
-// 🌿 الألوان الأساسية (Primary Colors)
+const Color backgroundColor = Color(0xFFE0EFEC); // خلفية التطبيق الرئيسية
 const Color primaryColor = Color(
   0xFF2D9596,
 ); // اللون الرئيسي (أخضر-أزرق روحاني)
@@ -20,7 +20,6 @@ const Color textSecondary = Color(0xFF6C8A93); // نص ثانوي
 const Color textDisabled = Color(0xFFA7BEC5); // نص غير نشط
 
 // 🖼 ألوان الخلفيات والسطوح (Background & Surface)
-const Color backgroundColor = Color(0xFFF5F9F8); // خلفية التطبيق الرئيسية
 const Color surfaceColor = Color(0xFFFFFFFF); // لون البطاقات والسطح
 const Color dividerColor = Color(0xFFE0E9EC); // لون الحدود والفاصل
 

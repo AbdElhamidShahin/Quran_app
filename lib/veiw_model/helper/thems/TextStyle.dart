@@ -75,14 +75,7 @@ import 'color.dart';
   }
 
   // 8. نصوص الترجمة (مريحة للقراءة الطويلة)
-   TextStyle translationTextStyle() {
-    return TextStyle(
-      fontFamily: 'Roboto',
-      fontSize: 15,
-      height: 1.7,
-      color: textPrimary.withOpacity(0.8), // تم التغيير إلى textPrimary
-    );
-  }
+
 
   // 9. رقم السورة في الدائرة (بارز ولكن متناسق)
    TextStyle surahNumberCircleStyle() {
@@ -142,6 +135,14 @@ import 'color.dart';
       fontSize: 32,
       fontWeight: FontWeight.bold,
 
-      color: primaryDark, // تم التغيير إلى accentColor
+      color: primaryDark,
     );
   }
+TextStyle SttingsTextStyle() {
+  return TextStyle(
+    fontFamily: 'Cairo',
+    fontSize: 20,
+fontWeight: FontWeight.w600,
+    color: primaryDark
+  );
+}

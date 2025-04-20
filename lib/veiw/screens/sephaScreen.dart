@@ -56,7 +56,7 @@ class SephaScreen extends StatelessWidget {
                             Text(
                               "${cubit.Options()}",
                               style: juzNumberStyle().copyWith(
-                                fontSize: 28,
+                                fontSize: 32,
                                 color: Colors.white,
                                 shadows: [
                                   Shadow(
@@ -100,7 +100,7 @@ class SephaScreen extends StatelessWidget {
                         ),
                         child: Icon(
                           Icons.refresh,
-                          size: 40,
+                          size: 80,
                           color: primaryColor,
                         ),
                       ),
