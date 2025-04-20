@@ -13,7 +13,6 @@ class AzkarPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(title: ('الأذكار')),
-backgroundColor: backgroundColor,
       body: FutureBuilder<List<AzkarCategoryModel>>(
         future: fetchAzkarCategoryFromJson(),
         builder: (context, snapshot) {

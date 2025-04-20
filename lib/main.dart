@@ -6,8 +6,8 @@ import 'package:quran_app/veiw/screens/HomePage.dart';
 import 'package:quran_app/veiw/screens/TheListScreen.dart';
 import 'package:quran_app/veiw_model/helper/saveLastReadPage.dart';
 import 'package:quran_app/veiw_model/helper/thems/ThemeProviderDarkMode.dart';
+import 'package:quran_app/veiw_model/helper/thems/color.dart';
 
-import '0.dart';
 import 'model/ItemProvider.dart';
 import 'model/api/apiServise.dart';
 import 'model/bloc/bloc.dart';
@@ -41,19 +41,20 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'تطبيق القرآن',
       debugShowCheckedModeBanner: false,
+      themeMode: themeProvider.isDarkMode ? ThemeMode.dark : ThemeMode.light,
       theme: ThemeData(
         fontFamily: 'Poppins',
         brightness: Brightness.light,
+        scaffoldBackgroundColor:backgroundColor, // خلفية الوضع العادي
       ),
       darkTheme: ThemeData(
         fontFamily: 'Poppins',
         brightness: Brightness.dark,
+        scaffoldBackgroundColor: Color(0xFF121212), // خلفية الوضع الليلي
       ),
-      themeMode: themeProvider.isDarkMode ? ThemeMode.dark : ThemeMode.light,
-
       home: const Directionality(
         textDirection: TextDirection.rtl,
-        child: test(),
+        child: HomePage(),
       ),
     );
   }

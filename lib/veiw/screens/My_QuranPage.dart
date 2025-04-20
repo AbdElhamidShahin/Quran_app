@@ -12,10 +12,10 @@ class MyQuranPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: backgroundColor,
       appBar: CustomAppBar(title: ("القرأن الكريم")),
 
-      body: Directionality(      textDirection: TextDirection.rtl,
+      body: Directionality(
+        textDirection: TextDirection.rtl,
 
         child: FutureBuilder<List<Item>>(
           future: fetchSuraDetails(),

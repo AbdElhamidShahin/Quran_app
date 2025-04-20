@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter/material.dart';
 
-const Color backgroundColor = Color(0xFFE0EFEC); // خلفية التطبيق الرئيسية
-const Color primaryColor = Color(
+ Color backgroundColor = Color(0xFFE0EFEC); // خلفية التطبيق الرئيسية
+ Color primaryColor = Color(
   0xFF2D9596,
 ); // اللون الرئيسي (أخضر-أزرق روحاني)
 const Color primaryLight = Color(0xFF9AD0C2); // فاتح من اللون الرئيسي

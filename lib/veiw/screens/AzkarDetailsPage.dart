@@ -13,7 +13,6 @@ class AzkarDetailsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(title: (azkar.category)),
-      backgroundColor: backgroundColor,
       body: Directionality(      textDirection: TextDirection.rtl,
 
         child: ListView.builder(

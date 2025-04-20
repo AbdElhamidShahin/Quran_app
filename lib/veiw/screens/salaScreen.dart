@@ -130,7 +130,6 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor:backgroundColor ,
       appBar: CustomAppBar(title: 'مواقيت الصلاه'),
       body: BlocBuilder<PrayerBloc, PrayerState>(
         builder: (context, state) {

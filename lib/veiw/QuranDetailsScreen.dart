@@ -49,10 +49,8 @@ class _QuranDetailsScreenState extends State<QuranDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: backgroundColor,
 
       appBar: AppBar(
-        backgroundColor: backgroundColor,
         title: Column(
           children: [
             Text("سوره ${widget.surahName}", style: appBarTitleStyle()),
@@ -75,27 +73,30 @@ class _QuranDetailsScreenState extends State<QuranDetailsScreen> {
 
         centerTitle: true,
       ),
-      body: FutureBuilder<List<Item>>(
-        future: fetchQuranPagesBySurah(widget.surahNumber),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return buildLoadingShimmer();
-          }
-          if (snapshot.hasError) {
-            return buildErrorWidget(snapshot.error.toString());
-          }
-          if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return buildEmptyWidget();
-          }
+      body: Container(
 
-          return buildContentSuccess(
-            context,
-            snapshot.data!,
-            widget.surahName,
-            surahNameEn: widget.surahNameEn,
-            transliteration: widget.transliteration,
-          );
-        },
+        child: FutureBuilder<List<Item>>(
+          future: fetchQuranPagesBySurah(widget.surahNumber),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return buildLoadingShimmer();
+            }
+            if (snapshot.hasError) {
+              return buildErrorWidget(snapshot.error.toString());
+            }
+            if (!snapshot.hasData || snapshot.data!.isEmpty) {
+              return buildEmptyWidget();
+            }
+
+            return buildContentSuccess(
+              context,
+              snapshot.data!,
+              widget.surahName,
+              surahNameEn: widget.surahNameEn,
+              transliteration: widget.transliteration,
+            );
+          },
+        ),
       ),
     );
   }

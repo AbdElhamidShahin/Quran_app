@@ -12,7 +12,6 @@ class SephaScreen extends StatelessWidget {
     return Directionality(
       textDirection: TextDirection.ltr,
       child: Scaffold(
-        backgroundColor: backgroundColor,
         appBar: CustomAppBar(title: 'المسبحة'),
         body: BlocProvider(
           create: (BuildContext context) => CounterCubit(),
