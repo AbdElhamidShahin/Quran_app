@@ -1,53 +1,30 @@
 import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:convert';
-import 'package:flutter/services.dart';
-
-import '../../model/JsonScreen.dart';
-import '../../model/item.dart';
-
-Future<void> saveLastReadPage(int pageNumber) async {
-  final prefs = await SharedPreferences.getInstance();
-  await prefs.setInt('lastReadPage', pageNumber);
-}
+import 'package:quran_app/model/item.dart';
+import 'package:quran_app/model/JsonScreen.dart';
 
 Future<int?> getLastReadPage() async {
   final prefs = await SharedPreferences.getInstance();
-  int? page = prefs.getInt('lastReadPage');
-  print('Last read page from storage: $page');
-  return page;
+  int? page = prefs.getInt('last_read_page');
+  return page ?? 700; // fallback
 }
 
-Future<Map<String, dynamic>> getSurahInfoByPage(int pageNumber) async {
-  final String response = await rootBundle.loadString('assets/pagesQuran.json');
-  final List<dynamic> data = json.decode(response);
-
-  print('Data loaded from JSON: $data'); // إضافة سجلات للطباعة هنا
-
-  for (var page in data) {
-    if (page['page'] == pageNumber) {
-      final start = page['start'];
-      return {
-        'surahNumber': start['surah_number'],
-        'surahNameAr': start['surah_name_ar'],
-      };
-    }
-  }
-
-  throw Exception('لم يتم العثور على معلومات السورة للصفحة $pageNumber');
-}
 Future<Item?> getLastReadSura() async {
   final prefs = await SharedPreferences.getInstance();
   final surahNumber = prefs.getInt('last_read_surah');
-
   if (surahNumber != null) {
-    final suras = await fetchSuraDetails(); // بترجع List<Item>
+    final suras = await fetchSuraDetails();
     try {
-      return suras.firstWhere(
-            (sura) => sura.surahNumber == surahNumber,
-      );
+      return suras.firstWhere((sura) => sura.surahNumber == surahNumber);
     } catch (e) {
+      print("Error finding surah: $e");
       return null;
     }
   }
   return null;
+}
+
+Future<void> saveLastReadPage(int pageNumber, int surahNumber) async {
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.setInt('last_read_page', pageNumber);
+  await prefs.setInt('last_read_surah', surahNumber);
 }

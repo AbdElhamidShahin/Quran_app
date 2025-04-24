@@ -1,10 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:quran_app/veiw/wedgit/Dashboard.dart' show Dashboard;
-import 'package:quran_app/veiw/wedgit/LastReadWidget.dart' show LastReadWidget;
-
-import '../../model/Item.dart';
+import 'package:quran_app/model/item.dart';
+import '../../veiw_model/helper/saveLastReadPage.dart';
 import '../../veiw_model/helper/thems/TextStyle.dart';
 import '../../veiw_model/helper/thems/color.dart';
+import '../wedgit/Dashboard.dart';
+import '../wedgit/LastReadWidget.dart';
 import 'TheListScreen.dart';
 
 class HomePage extends StatelessWidget {
@@ -13,19 +14,15 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Item? lastReadSura;
-
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
+
     return Scaffold(
       drawer: Drawer(
         child: Column(
-          children: [
-
-            Expanded(child: Setings()),
-          ],
+          children: [Expanded(child: Setings())],
         ),
       ),
-
       appBar: AppBar(
         scrolledUnderElevation: 0,
         elevation: 0,
@@ -34,13 +31,12 @@ class HomePage extends StatelessWidget {
         centerTitle: true,
         actions: [
           Builder(
-            builder:
-                (context) => IconButton(
-                  icon: Icon(Icons.menu, color: primaryColor),
-                  onPressed: () {
-                    Scaffold.of(context).openDrawer();
-                  },
-                ),
+            builder: (context) => IconButton(
+              icon: Icon(Icons.menu, color: primaryColor),
+              onPressed: () {
+                Scaffold.of(context).openDrawer();
+              },
+            ),
           ),
         ],
         title: Text("القرأن الكريم", style: appBarTitleStyle()),
@@ -53,7 +49,6 @@ class HomePage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               SizedBox(height: 12),
-
               Padding(
                 padding: EdgeInsets.only(bottom: height * .01),
                 child: Center(
@@ -64,10 +59,25 @@ class HomePage extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 12),
-              LastReadWidget(
-                height: height,
-                width: width,
-                sura: lastReadSura, // تأكد إنها مش null هنا
+              FutureBuilder<Item?>(
+                future: getLastReadSura(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return CircularProgressIndicator();
+                  } else if (snapshot.hasData && snapshot.data != null) {
+                    return LastReadWidget(
+                      height: height,
+                      width: width,
+                      sura: snapshot.data,
+                    );
+                  } else {
+                    return LastReadWidget(
+                      height: height,
+                      width: width,
+                      sura: null,
+                    );
+                  }
+                },
               ),
               Dashboard(height: height),
               SizedBox(height: 24),

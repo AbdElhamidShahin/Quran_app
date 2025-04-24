@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'Item.dart';
+import 'package:quran_app/model/item.dart';
 
 class ItemProvider with ChangeNotifier {
   List<Item> _items = [];

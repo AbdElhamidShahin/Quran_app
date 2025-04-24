@@ -42,9 +42,6 @@ class _QuranDetailsScreenState extends State<QuranDetailsScreen> {
     await prefs.setInt('last_read_page', widget.pageNumber);
     await prefs.setInt('last_read_surah', widget.surahNumber);
     await prefs.setString('last_read_surah_name', widget.surahName);
-
-    print('Saved last read page: ${widget.pageNumber}');
-    print('Saved last read surah: ${widget.surahNumber}');
   }
 
   @override
