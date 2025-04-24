@@ -13,7 +13,6 @@ import 'wedgit/buildContentScess.dart';
 class QuranDetailsScreen extends StatefulWidget {
   final int surahNumber;
   final int pageNumber;
-
   final String surahName;
   final String? surahNameEn;
   final String? transliteration;
@@ -21,7 +20,6 @@ class QuranDetailsScreen extends StatefulWidget {
   const QuranDetailsScreen({
     super.key,
     required this.pageNumber,
-
     required this.surahNumber,
     required this.surahName,
     this.surahNameEn,
@@ -44,13 +42,16 @@ class _QuranDetailsScreenState extends State<QuranDetailsScreen> {
     await prefs.setInt('last_read_page', widget.pageNumber);
     await prefs.setInt('last_read_surah', widget.surahNumber);
     await prefs.setString('last_read_surah_name', widget.surahName);
+
+    print('Saved last read page: ${widget.pageNumber}');
+    print('Saved last read surah: ${widget.surahNumber}');
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       appBar: AppBar(
+        backgroundColor: backgroundColor(context),
         title: Column(
           children: [
             Text("سوره ${widget.surahName}", style: appBarTitleStyle()),
@@ -70,11 +71,9 @@ class _QuranDetailsScreenState extends State<QuranDetailsScreen> {
             child: Text("${widget.pageNumber}", style: appBodyStyle()),
           ),
         ),
-
         centerTitle: true,
       ),
       body: Container(
-
         child: FutureBuilder<List<Item>>(
           future: fetchQuranPagesBySurah(widget.surahNumber),
           builder: (context, snapshot) {

@@ -15,7 +15,6 @@ import 'model/bloc/bloc.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await loadQuranData();
 
   runApp(
     MultiProvider(
@@ -45,7 +44,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         fontFamily: 'Poppins',
         brightness: Brightness.light,
-        scaffoldBackgroundColor:backgroundColor, // خلفية الوضع العادي
+        scaffoldBackgroundColor: backgroundColor(context), // خلفية الوضع العادي
       ),
       darkTheme: ThemeData(
         fontFamily: 'Poppins',

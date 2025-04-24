@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
@@ -6,7 +7,6 @@ import '../../model/PrayerTime.dart';
 import '../../model/bloc/bloc.dart';
 import '../../model/bloc/states.dart';
 import '../../veiw_model/helper/Position/getPosition.dart';
-import '../../veiw_model/helper/thems/color.dart';
 import '../wedgit/CustomAppBar.dart';
 import '../wedgit/buildLoadingShimmer.dart';
 import '../wedgit/buildPrayerTimesUI.dart';
@@ -23,7 +23,7 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
   Duration remainingTime = Duration.zero;
   late Timer _timer;
   Map<String, String> _prayerTimes = {};
-
+  final AudioPlayer _audioPlayer = AudioPlayer();
   @override
   void initState() {
     super.initState();
@@ -38,7 +38,15 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
   @override
   void dispose() {
     _timer.cancel();
+    _audioPlayer.dispose();
     super.dispose();
+  }
+
+  Future<void> playAdhanSound() async {
+    final adhanSoundUrl = 'assets/4032.mp3'; // ضع الرابط هنا
+    await _audioPlayer.play(
+      UrlSource(adhanSoundUrl),
+    );
   }
 
   Future<void> fetchData() async {
@@ -56,7 +64,6 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
       ).showSnackBar(SnackBar(content: Text(e.toString())));
     }
   }
-
 
   void _calculateNextPrayerTimes() {
     final now = DateTime.now();
@@ -124,6 +131,9 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
         nextPrayerName = nextPrayer;
         remainingTime = nextPrayerDateTime!.difference(now);
       });
+
+      // تشغيل الأذان عند وقت الصلاة
+      playAdhanSound();
     }
   }
 
@@ -134,7 +144,7 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
       body: BlocBuilder<PrayerBloc, PrayerState>(
         builder: (context, state) {
           if (state is PrayerLoadingState) {
-            return  Center(child: buildLoadingShimmer());
+            return Center(child: buildLoadingShimmer());
           } else if (state is PrayerLoadedState) {
             if (_prayerTimes != state.times) {
               _prayerTimes = state.times;
@@ -152,7 +162,11 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Lottie.asset('assets/Animation - 1745055052923.json', width: 250, height: 250),
+                  Lottie.asset(
+                    'assets/Animation - 1745055052923.json',
+                    width: 250,
+                    height: 250,
+                  ),
                   const SizedBox(height: 20),
                   const Text(
                     'لا يوجد اتصال بالإنترنت',
@@ -167,10 +181,7 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
               ),
             );
           }
-          return  Center(
-
-            child: buildLoadingShimmer(),
-          );
+          return Center(child: buildLoadingShimmer());
         },
       ),
     );

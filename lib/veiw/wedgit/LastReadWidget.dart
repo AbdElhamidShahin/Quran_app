@@ -4,44 +4,41 @@ import '../../veiw_model/helper/thems/TextStyle.dart';
 import '../../veiw_model/helper/thems/color.dart';
 import 'GotoWidget.dart';
 import '../QuranDetailsScreen.dart';
-import '../../veiw_model/helper/saveLastReadPage.dart';
 
 class LastReadWidget extends StatelessWidget {
   const LastReadWidget({
     Key? key,
     required this.height,
     required this.width,
-    this.sura,
+     this.sura,
   }) : super(key: key);
-  final Item? sura;
 
+  final Item? sura;
   final double height;
   final double width;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () async {
-        try {
-          int? page = await getLastReadPage();
-          if (page != null) {
-            final surahInfo = getSurahInfoByPage(page);
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder:
-                    (context) => QuranDetailsScreen(
-                      pageNumber: page,
-                      surahNumber: surahInfo['surahNumber'],
-                      surahName: surahInfo['surahNameAr'],
-                    ),
-              ),
-            );
-          }
-        } catch (e) {
-          ScaffoldMessenger.of(
+      behavior: HitTestBehavior.opaque,
+      onTap: () {
+        if (sura != null) {
+          Navigator.push(
             context,
-          ).showSnackBar(SnackBar(content: Text(e.toString())));
+            MaterialPageRoute(
+              builder: (context) => QuranDetailsScreen(
+                pageNumber: sura!.page,
+                surahNumber: sura!.surahNumber,
+                surahName: sura!.surahNameAr,
+              ),
+            ),
+          );
+        } else {
+          // لو عايز تعرض رسالة أو تتجاهل الضغط
+          print('sura is null');
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('لا توجد بيانات للعرض')),
+          );
         }
       },
       child: Container(

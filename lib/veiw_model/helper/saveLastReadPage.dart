@@ -1,49 +1,53 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
+import 'package:flutter/services.dart';
 
-Map<String, dynamic> pagesQuran = {};
-Map<String, dynamic> allSurahs = {};
+import '../../model/JsonScreen.dart';
+import '../../model/item.dart';
 
-Future<void> loadQuranData() async {
-  try {
-    final pagesJsonString = await rootBundle.loadString('assets/json/pagesQuran.json');
-    final surahsJsonString = await rootBundle.loadString('assets/json/allSurahs.json');
-    pagesQuran = json.decode(pagesJsonString);
-    allSurahs = json.decode(surahsJsonString);
-  } catch (e) {
-    debugPrint('Error loading Quran data: $e');
-  }
-}
-
-Map<String, dynamic> getSurahInfoByPage(int page) {
-  // إذا كانت الصفحة موجودة، إرجاع بياناتها
-  final pageKey = page.toString();
-  if (pagesQuran.containsKey(pageKey)) {
-    final surahNumber = pagesQuran[pageKey]['surah'];
-    final surahName = allSurahs[surahNumber.toString()]['name'];
-    return {
-      'surahNumber': surahNumber,
-      'surahNameAr': surahName,
-    };
-  }
-
-  // إذا كانت الصفحة غير موجودة، البحث عن أقرب صفحة أصغر (أو أكبر)
-  final nearestPage = pagesQuran.keys
-      .map((k) => int.parse(k))
-      .toList()
-      .reduce((a, b) => (a - page).abs() < (b - page).abs() ? a : b);
-
-  final surahNumber = pagesQuran[nearestPage.toString()]['surah'];
-  final surahName = allSurahs[surahNumber.toString()]['name'];
-  return {
-    'surahNumber': surahNumber,
-    'surahNameAr': surahName,
-  };
+Future<void> saveLastReadPage(int pageNumber) async {
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.setInt('lastReadPage', pageNumber);
 }
 
 Future<int?> getLastReadPage() async {
   final prefs = await SharedPreferences.getInstance();
-  return prefs.getInt('last_read_page');
+  int? page = prefs.getInt('lastReadPage');
+  print('Last read page from storage: $page');
+  return page;
+}
+
+Future<Map<String, dynamic>> getSurahInfoByPage(int pageNumber) async {
+  final String response = await rootBundle.loadString('assets/pagesQuran.json');
+  final List<dynamic> data = json.decode(response);
+
+  print('Data loaded from JSON: $data'); // إضافة سجلات للطباعة هنا
+
+  for (var page in data) {
+    if (page['page'] == pageNumber) {
+      final start = page['start'];
+      return {
+        'surahNumber': start['surah_number'],
+        'surahNameAr': start['surah_name_ar'],
+      };
+    }
+  }
+
+  throw Exception('لم يتم العثور على معلومات السورة للصفحة $pageNumber');
+}
+Future<Item?> getLastReadSura() async {
+  final prefs = await SharedPreferences.getInstance();
+  final surahNumber = prefs.getInt('last_read_surah');
+
+  if (surahNumber != null) {
+    final suras = await fetchSuraDetails(); // بترجع List<Item>
+    try {
+      return suras.firstWhere(
+            (sura) => sura.surahNumber == surahNumber,
+      );
+    } catch (e) {
+      return null;
+    }
+  }
+  return null;
 }

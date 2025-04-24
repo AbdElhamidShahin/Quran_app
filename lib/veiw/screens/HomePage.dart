@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:quran_app/veiw/wedgit/Dashboard.dart' show Dashboard;
 import 'package:quran_app/veiw/wedgit/LastReadWidget.dart' show LastReadWidget;
 
+import '../../model/Item.dart';
 import '../../veiw_model/helper/thems/TextStyle.dart';
 import '../../veiw_model/helper/thems/color.dart';
 import 'TheListScreen.dart';
@@ -11,24 +12,15 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Item? lastReadSura;
+
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
     return Scaffold(
       drawer: Drawer(
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12),
-              child: IconButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => Setings()),
-                  );
-                },
-                icon: Icon(Icons.menu, color: primaryColor, size: 28),
-              ),
-            ),
+
             Expanded(child: Setings()),
           ],
         ),
@@ -72,7 +64,11 @@ class HomePage extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 12),
-              LastReadWidget(height: height, width: width),
+              LastReadWidget(
+                height: height,
+                width: width,
+                sura: lastReadSura, // تأكد إنها مش null هنا
+              ),
               Dashboard(height: height),
               SizedBox(height: 24),
             ],

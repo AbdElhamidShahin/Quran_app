@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter/material.dart';
-
- Color backgroundColor = Color(0xFFE0EFEC); // خلفية التطبيق الرئيسية
+Color backgroundColor(BuildContext context) {
+ return Theme.of(context).brightness == Brightness.dark
+     ? const Color(0xFF121212)
+     : Color(0xFFE0EFEC);
+}
  Color primaryColor = Color(
   0xFF2D9596,
 ); // اللون الرئيسي (أخضر-أزرق روحاني)
