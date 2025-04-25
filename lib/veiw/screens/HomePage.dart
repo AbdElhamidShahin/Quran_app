@@ -4,6 +4,7 @@ import 'package:quran_app/model/item.dart';
 import '../../veiw_model/helper/saveLastReadPage.dart';
 import '../../veiw_model/helper/thems/TextStyle.dart';
 import '../../veiw_model/helper/thems/color.dart';
+import '../QuranDetailsScreen.dart';
 import '../wedgit/Dashboard.dart';
 import '../wedgit/LastReadWidget.dart';
 import 'TheListScreen.dart';
@@ -13,7 +14,6 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Item? lastReadSura;
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
 
@@ -59,27 +59,9 @@ class HomePage extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 12),
-              FutureBuilder<Item?>(
-                future: getLastReadSura(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return CircularProgressIndicator();
-                  } else if (snapshot.hasData && snapshot.data != null) {
-                    return LastReadWidget(
-                      height: height,
-                      width: width,
-                      sura: snapshot.data,
-                    );
-                  } else {
-                    return LastReadWidget(
-                      height: height,
-                      width: width,
-                      sura: null,
-                    );
-                  }
-                },
-              ),
-              Dashboard(height: height),
+
+
+              LastReadWidget(width:width ,height: height,)        ,      Dashboard(height: height),
               SizedBox(height: 24),
             ],
           ),

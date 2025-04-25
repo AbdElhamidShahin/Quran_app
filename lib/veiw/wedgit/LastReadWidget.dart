@@ -23,21 +23,23 @@ class LastReadWidget extends StatelessWidget {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () async {
-        if (sura != null) {
-          final page = await getLastReadPage();
+        final lastRead = await getLastReadPage();
+
+        if (lastRead != null) {
           Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => QuranDetailsScreen(
-                pageNumber: page ?? 700, // fallback
-                surahNumber: sura!.surahNumber,
-                surahName: sura!.surahNameEn,
+                pageNumber: lastRead['page'],
+                surahNumber: lastRead['surah'],
+                surahName: lastRead['surahName'],
+                // لو حابب تبعت En Name أو Transliteration ضيفهم كمان لو كنت حافظهم
               ),
             ),
           );
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('لا توجد بيانات للعرض')),
+            SnackBar(content: Text("لا يوجد قراءة محفوظة")),
           );
         }
       },

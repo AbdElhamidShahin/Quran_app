@@ -6,25 +6,26 @@ import '../../veiw_model/helper/thems/TextStyle.dart';
 import '../../veiw_model/helper/thems/ThemeProviderDarkMode.dart';
 import '../../veiw_model/helper/thems/color.dart';
 
-
 class Setings extends StatelessWidget {
   const Setings({super.key});
 
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
-  final isDarkMode = themeProvider.isDarkMode;
+    final isDarkMode = themeProvider.isDarkMode;
     return Scaffold(
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
+          SizedBox(height: 32),
           _buildSettingsOption(
             context,
             icon: Icons.privacy_tip,
             title: 'سياسة الخصوصية',
             onPressed: () {
               _launchUrl(
-                  "https://www.freeprivacypolicy.com/live/931d000c-ebf9-46ec-a72d-a619560a7173");
+                "https://www.freeprivacypolicy.com/live/931d000c-ebf9-46ec-a72d-a619560a7173",
+              );
             },
           ),
           _buildSettingsOption(
@@ -33,7 +34,8 @@ class Setings extends StatelessWidget {
             title: 'تقييم التطبيق',
             onPressed: () {
               _launchUrl(
-                  "https://play.google.com/store/apps/details?id=com.yourcompanyname.yourappname&fbclid=IwZXh0bgNhZW0CMTAAAR1zobhWeqLMCQDh_XmcPyNn7xHySVpG1MSrQs70NWFhZ_17bsnXV9936ls_aem_xXW5vyMyfUmyH9kifCQD1Q");
+                "https://play.google.com/store/apps/details?id=com.yourcompanyname.yourappname&fbclid=IwZXh0bgNhZW0CMTAAAR1zobhWeqLMCQDh_XmcPyNn7xHySVpG1MSrQs70NWFhZ_17bsnXV9936ls_aem_xXW5vyMyfUmyH9kifCQD1Q",
+              );
             },
           ),
           _buildSettingsOption(
@@ -62,68 +64,72 @@ class Setings extends StatelessWidget {
             },
           ),
 
-
-
-
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Switch(
-                  value: isDarkMode,
-                  onChanged: (value) {
-                    themeProvider.toggleTheme();
-                  },
-                ),
-                Spacer(),
-                TextButton(
-                  onPressed: () {},
-                  child: Text(
-                    isDarkMode ? 'Dark Mode' : 'Light Mode',
-                    style: TextStyle(
+            padding: const EdgeInsets.symmetric(horizontal: 32),
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+
+                borderRadius: BorderRadius.circular(16),
+              ),
+              margin: const EdgeInsets.symmetric(vertical: 12,),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Container(
+                    height: 24,
+                    width: 24,
+                    decoration: BoxDecoration(
+                      color: primaryDark,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  ),
+
+                  TextButton(
+                    onPressed: () {},
+                    child: Text(
+                      isDarkMode ? 'الوضع الليلي' : 'الوضع النهاري',
+                      style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 24,
-                        color: primaryDark),
+                        color: primaryDark,
+                      ),
+                    ),
                   ),
-                ),
-                Container(
-                  height: 24,
-                  width: 24,
-                  decoration: BoxDecoration(
-                      color: primaryDark, borderRadius: BorderRadius.circular(20)),
-                ),
-              ],
+                  Spacer(),
+                  Switch(
+                    value: isDarkMode,
+                    onChanged: (value) {
+                      themeProvider.toggleTheme();
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
-
-
-
-
         ],
       ),
     );
   }
 
-  Widget _buildSettingsOption(BuildContext context,
-      {required IconData icon,
-        required String title,
-        required VoidCallback onPressed}) {
+  Widget _buildSettingsOption(
+    BuildContext context, {
+    required IconData icon,
+    required String title,
+    required VoidCallback onPressed,
+  }) {
     return Card(
       color: Colors.white,
       margin: const EdgeInsets.symmetric(vertical: 12),
       elevation: 0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: ListTile(
-        contentPadding:
-        const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-        leading: Icon(icon, color:primaryDark, size: 28),
-        title: Text(
-          title,
-          style: SttingsTextStyle()
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 12,
         ),
+        leading: Icon(icon, color: primaryDark, size: 28),
+        title: Text(title, style: SttingsTextStyle()),
         onTap: onPressed,
       ),
     );
@@ -140,9 +146,10 @@ class Setings extends StatelessWidget {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text('تحذير',
-              style:
-              TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
+          title: const Text(
+            'تحذير',
+            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+          ),
           content: const Text(
             'هذه رسالة تحذير.',
             style: TextStyle(color: Colors.black),

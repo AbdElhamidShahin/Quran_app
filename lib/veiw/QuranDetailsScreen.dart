@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../model/item.dart';
 import '../model/JsonScreen.dart';
-import '../veiw_model/helper/saveLastReadPage.dart';
 import '../veiw_model/helper/thems/TextStyle.dart';
 import '../veiw_model/helper/thems/color.dart';
 import 'wedgit/buildLoadingShimmer.dart';
@@ -31,15 +30,19 @@ class QuranDetailsScreen extends StatefulWidget {
 }
 
 class _QuranDetailsScreenState extends State<QuranDetailsScreen> {
+  late PageController _pageController;
+
   @override
   void initState() {
     super.initState();
-    _saveLastReadPage();
+    _pageController = PageController(initialPage: widget.pageNumber);
+    _saveLastReadPage(widget.pageNumber);
   }
 
-  Future<void> _saveLastReadPage() async {
+  // دالة لحفظ الصفحة الأخيرة في SharedPreferences
+  Future<void> _saveLastReadPage(int pageNumber) async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setInt('last_read_page', widget.pageNumber);
+    await prefs.setInt('last_read_page', pageNumber);
     await prefs.setInt('last_read_surah', widget.surahNumber);
     await prefs.setString('last_read_surah_name', widget.surahName);
   }
@@ -70,29 +73,36 @@ class _QuranDetailsScreenState extends State<QuranDetailsScreen> {
         ),
         centerTitle: true,
       ),
-      body: Container(
-        child: FutureBuilder<List<Item>>(
-          future: fetchQuranPagesBySurah(widget.surahNumber),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return buildLoadingShimmer();
-            }
-            if (snapshot.hasError) {
-              return buildErrorWidget(snapshot.error.toString());
-            }
-            if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return buildEmptyWidget();
-            }
+      body: PageView.builder(
+        controller: _pageController,
+        itemCount: 604, // عدد الصفحات
+        onPageChanged: (index) {
+          _saveLastReadPage(index); // حفظ الصفحة عند التغيير
+        },
+        itemBuilder: (context, index) {
+          return FutureBuilder<List<Item>>(
+            future: fetchQuranPagesBySurah(widget.surahNumber),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return buildLoadingShimmer();
+              }
+              if (snapshot.hasError) {
+                return buildErrorWidget(snapshot.error.toString());
+              }
+              if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                return buildEmptyWidget();
+              }
 
-            return buildContentSuccess(
-              context,
-              snapshot.data!,
-              widget.surahName,
-              surahNameEn: widget.surahNameEn,
-              transliteration: widget.transliteration,
-            );
-          },
-        ),
+              return buildContentSuccess(
+                context,
+                snapshot.data!,
+                widget.surahName,
+                surahNameEn: widget.surahNameEn,
+                transliteration: widget.transliteration,
+              );
+            },
+          );
+        },
       ),
     );
   }
