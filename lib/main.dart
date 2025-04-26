@@ -49,7 +49,7 @@ class MyApp extends StatelessWidget {
       darkTheme: ThemeData(
         fontFamily: 'Poppins',
         brightness: Brightness.dark,
-        scaffoldBackgroundColor: Color(0xFF121212), // خلفية الوضع الليلي
+        scaffoldBackgroundColor: Color(0xFF121B22), // #121B22
       ),
       home: const Directionality(
         textDirection: TextDirection.rtl,

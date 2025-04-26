@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter/material.dart';
+
 Color backgroundColor(BuildContext context) {
- return Theme.of(context).brightness == Brightness.dark
-     ? const Color(0xFF121212)
-     : Color(0xFFE0EFEC);
+  return Theme.of(context).brightness == Brightness.dark
+      ? const Color(0xFF121B22)
+      : Color(0xFFE0EFEC);
 }
- Color primaryColor = Color(
-  0xFF2D9596,
-); // اللون الرئيسي (أخضر-أزرق روحاني)
+
+Color colorQuranPages(BuildContext context) {
+  return Theme.of(context).brightness == Brightness.dark
+      ? const Color(0xFFFFFFFF)
+      : Color(0xFF000000);
+}
+
+Color primaryColor = Color(0xFF2D9596); // اللون الرئيسي (أخضر-أزرق روحاني)
 const Color primaryLight = Color(0xFF9AD0C2); // فاتح من اللون الرئيسي
 const Color primaryDark = Color(0xFF1A6E7A); // غامق من اللون الرئيسي
 const Color continar = Color(0xFF88BCA4); // غامق من اللون الرئيسي
@@ -31,8 +37,6 @@ const Color successColor = Color(0xFF4CAF50); // نجاح
 const Color errorColor = Color(0xFFF44336); // خطأ
 const Color warningColor = Color(0xFFFF9800); // تحذير
 const Color infoColor = Color(0xFF2196F3); // معلومات
-
-
 
 // ✨ ألوان إضافية خاصة بالقرآن
 const Color ayahHighlight = Color(0xFFE8F4EA); // تمييز الآيات

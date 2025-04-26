@@ -34,14 +34,10 @@ class CustomAzkarPage extends StatelessWidget {
               textDirection: TextDirection.rtl,
               children: [
                 Expanded(
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    reverse: true,
-                    child: Text(
-                      azkarCategory?.category ?? '',
-                      style: sajdaMarkerStyle(),
-                      textDirection: TextDirection.rtl,
-                    ),
+                  child: Text(
+                    azkarCategory?.category ?? '',
+                    style: sajdaMarkerStyle(),
+                    textDirection: TextDirection.rtl,
                   ),
                 ),
                 const Icon(Icons.arrow_back_ios, color: primaryDark),

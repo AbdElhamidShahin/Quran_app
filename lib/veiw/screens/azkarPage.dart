@@ -37,9 +37,15 @@ class AzkarPage extends StatelessWidget {
 
           final categories = snapshot.data!;
 
-          return ListView.builder(
-            padding: const EdgeInsets.all(16),
+          return GridView.builder(
+            padding: const EdgeInsets.all(8),
             itemCount: categories.length,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2, // عدد الأعمدة
+              crossAxisSpacing: 0, // المسافة الأفقية بين العناصر
+              mainAxisSpacing: 0, // المسافة الرأسية بين العناصر
+              childAspectRatio: 1.2 // نسبة الطول إلى العرض للعنصر الواحد
+            ),
             itemBuilder: (BuildContext context, int index) {
               return CustomAzkarPage(azkarCategory: categories[index]);
             },

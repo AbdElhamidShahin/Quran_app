@@ -31,13 +31,10 @@ class QuranDetailsScreen extends StatefulWidget {
 
 class _QuranDetailsScreenState extends State<QuranDetailsScreen> {
   late PageController _pageController;
-  int currentPage = 0;
 
   @override
   void initState() {
     super.initState();
-    currentPage = widget.pageNumber;
-
     _pageController = PageController(initialPage: widget.pageNumber);
     _saveLastReadPage(widget.pageNumber);
   }
@@ -71,7 +68,7 @@ class _QuranDetailsScreenState extends State<QuranDetailsScreen> {
         leading: Center(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12),
-            child: Text("${currentPage+1}", style: appBodyStyle()),
+            child: Text("${widget.pageNumber}", style: appBodyStyle()),
           ),
         ),
         centerTitle: true,
@@ -80,11 +77,7 @@ class _QuranDetailsScreenState extends State<QuranDetailsScreen> {
         controller: _pageController,
         itemCount: 604,
         onPageChanged: (index) {
-          setState(() {
-            currentPage = index;
-
-          });
-          _saveLastReadPage(index);
+          _saveLastReadPage(index); // حفظ الصفحة عند التغيير
         },
         itemBuilder: (context, index) {
           return FutureBuilder<List<Item>>(

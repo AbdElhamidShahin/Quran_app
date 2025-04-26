@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../model/item.dart';
+import '../../veiw_model/helper/thems/color.dart';
 Widget buildContentSuccess(
     BuildContext context,
     List<Item> pages,
@@ -17,6 +18,7 @@ Widget buildContentSuccess(
       return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 4.0),
         child: Image.asset(
+          color: colorQuranPages(context),
           page.imageUrl,
           width: double.infinity,
           fit: BoxFit.fitWidth,

@@ -63,47 +63,41 @@ class Setings extends StatelessWidget {
               // );
             },
           ),
-
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 32),
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-
-                borderRadius: BorderRadius.circular(16),
+          Card(
+            color: Colors.white,
+            margin: const EdgeInsets.symmetric(vertical: 12),
+            elevation: 0,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: ListTile(
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 8,
+                vertical: 12,
               ),
-              margin: const EdgeInsets.symmetric(vertical: 12,),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Container(
-                    height: 24,
-                    width: 24,
-                    decoration: BoxDecoration(
-                      color: primaryDark,
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                  ),
-
-                  TextButton(
-                    onPressed: () {},
-                    child: Text(
-                      isDarkMode ? 'الوضع الليلي' : 'الوضع النهاري',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 24,
-                        color: primaryDark,
-                      ),
-                    ),
-                  ),
-                  Spacer(),
-                  Switch(
-                    value: isDarkMode,
-                    onChanged: (value) {
-                      themeProvider.toggleTheme();
-                    },
-                  ),
-                ],
+              leading: Container(
+                height: 34,
+                width: 34,
+                decoration: BoxDecoration(
+                  color: primaryDark.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Icon(
+                  isDarkMode ? Icons.nightlight_round : Icons.wb_sunny,
+                  color: primaryDark,
+                  size: 22,
+                ),
+              ),
+              title: Text(
+                isDarkMode ? 'الوضع الليلي' : 'الوضع النهاري',
+                style: SttingsTextStyle(),
+              ),
+              trailing: Switch(
+                value: isDarkMode,
+                onChanged: (value) {
+                  themeProvider.toggleTheme();
+                },
+                activeColor: primaryDark,
               ),
             ),
           ),
