@@ -59,3 +59,17 @@ Future<List<Item>> fetchQuranPagesBySurah(int surahNumber) async {
     return [];
   }
 }
+Future<List<Item>> fetchQuranPagesByPageNumber(int pageNumber) async {
+  try {
+    final response = await rootBundle.loadString('assets/pagesQuran.json');
+    final List<dynamic> data = json.decode(response) as List<dynamic>;
+
+    if (pageNumber > 0 && pageNumber <= data.length) {
+      return [Item.fromJson(data[pageNumber - 1])]; // -1 لأن الفهرس يبدأ من 0
+    }
+    return [];
+  } catch (e) {
+    debugPrint('Error fetching Quran page: $e');
+    return [];
+  }
+}
