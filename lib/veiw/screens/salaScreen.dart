@@ -32,25 +32,22 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
   @override
   void initState() {
     super.initState();
+    _prayerService = PrayerService();
     _audioPlayer = AudioPlayer();
-    _prayerService = PrayerService(); // مهم تعرفه قبل الاستخدام
-    fetchData();  // <== انت نسيتها !
-
-    _audioPlayer.play(AssetSource('4032.mp3')).then((_) {
-      debugPrint('تم تشغيل صوت الأذان');
+    fetchData();
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (_prayerTimes.isNotEmpty) {
+        _calculateNextPrayerTimes();
+        checkPrayerTimes();
+      }
     });
-
   }
 
-  Future<void> _checkPrayerTimes() async {
+  Future<void> checkPrayerTimes() async {
     final now = DateTime.now();
     final currentTime = DateFormat('HH:mm').format(now);
 
-    debugPrint('Current time: $currentTime'); // اطبع الوقت الحالي للتأكد
-
     for (final entry in _prayerTimes.entries) {
-      debugPrint('Checking prayer time for ${entry.key}: ${entry.value}');
-
       if (currentTime == entry.value && !_isAdhanPlaying) {
         setState(() => _isAdhanPlaying = true);
         await _prayerService.playAdhan(entry.key);
@@ -66,7 +63,6 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
     super.dispose();
   }
 
-
   Future<void> fetchData() async {
     try {
       final position = await getPosition();
@@ -77,9 +73,9 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
       context.read<PrayerBloc>().add(
         FetchPrayerTimes(lat: 30.0444, lng: 31.2357),
       );
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(e.toString())),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(e.toString())));
     }
   }
 
@@ -105,15 +101,25 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
         final hour = int.parse(timeParts[0]);
         final minute = int.parse(timeParts[1]);
 
-        var prayerDateTime = DateTime(now.year, now.month, now.day, hour, minute);
+        var prayerDateTime = DateTime(
+          now.year,
+          now.month,
+          now.day,
+          hour,
+          minute,
+        );
 
         if (prayerDateTime.isBefore(now)) {
           if (prayer['name'] == 'العشاء') {
             final fajrTime = prayersInOrder[0]['time']?.split(':');
             if (fajrTime != null && fajrTime.length == 2) {
               prayerDateTime = DateTime(
-                  now.year, now.month, now.day + 1,
-                  int.parse(fajrTime[0]), int.parse(fajrTime[1]));
+                now.year,
+                now.month,
+                now.day + 1,
+                int.parse(fajrTime[0]),
+                int.parse(fajrTime[1]),
+              );
               nextPrayer = prayersInOrder[0]['name']!;
               nextPrayerDateTime = prayerDateTime;
               break;
@@ -122,7 +128,8 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
           continue;
         }
 
-        if (nextPrayerDateTime == null || prayerDateTime.isBefore(nextPrayerDateTime)) {
+        if (nextPrayerDateTime == null ||
+            prayerDateTime.isBefore(nextPrayerDateTime)) {
           nextPrayerDateTime = prayerDateTime;
           nextPrayer = prayer['name']!;
         }
@@ -136,6 +143,11 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
         nextPrayerName = nextPrayer;
         remainingTime = nextPrayerDateTime!.difference(now);
       });
+
+      // تشغيل الأذان عند وقت الصلاة
+      if (remainingTime.inSeconds <= 0 && remainingTime.inSeconds >= -60) {
+        _prayerService.playAdhan(nextPrayerName);
+      }
     }
   }
 
@@ -180,7 +192,7 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
                     'يرجى التحقق من الشبكة والمحاولة مرة أخرى',
                     style: TextStyle(fontSize: 14, color: Colors.grey),
                   ),
-                ]
+                ],
               ),
             );
           }

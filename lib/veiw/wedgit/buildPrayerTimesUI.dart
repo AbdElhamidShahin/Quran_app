@@ -9,6 +9,22 @@ Widget buildPrayerTimesUI(
     Duration remainingTime,
     bool isAdhanPlaying,
     ) {
+  // دالة لتحويل الوقت من 24 ساعة إلى 12 ساعة
+  String _formatTimeTo12Hour(String time24) {
+    try {
+      final timeParts = time24.split(':');
+      final hour = int.parse(timeParts[0]);
+      final minute = timeParts[1];
+
+      final period = hour >= 12 ? 'PM' : 'AM';
+      final hour12 = hour > 12 ? hour - 12 : hour;
+
+      return '$hour12:$minute $period';
+    } catch (e) {
+      return time24; // إذا حدث خطأ نعيد الوقت كما هو
+    }
+  }
+
   final orderedPrayers = [
     {'name': 'الفجر', 'time': times['الفجر'] ?? '--:--'},
     {'name': 'الظهر', 'time': times['الظهر'] ?? '--:--'},
@@ -58,7 +74,7 @@ Widget buildPrayerTimesUI(
                 Text(
                   isAdhanPlaying
                       ? 'حان وقت الصلاة'
-                      : 'الوقت المتبقي: ${remainingTime.inHours.toString().padLeft(2, '0')}:${(remainingTime.inMinutes % 60).toString().padLeft(2, '0')}',
+                      : 'الوقت المتبقي: ${remainingTime.inHours.toString().padLeft(2, '0')}:${(remainingTime.inMinutes % 60).toString().padLeft(2, '0')}:${(remainingTime.inSeconds % 60).toString().padLeft(2, '0')}',
                   style: const TextStyle(fontSize: 20),
                 ),
               ],
@@ -83,7 +99,7 @@ Widget buildPrayerTimesUI(
                       ? const Icon(Icons.volume_up, color: Colors.teal)
                       : null,
                   title: Text(
-                    prayer['time']!,
+                    _formatTimeTo12Hour(prayer['time']!),
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: isCurrent ? FontWeight.bold : FontWeight.w600,
