@@ -1,28 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-
 import '../../veiw_model/helper/thems/TextStyle.dart';
 import '../../veiw_model/helper/thems/color.dart';
 
 Widget buildPrayerTimesUI(
-  Map<String, String> times,
-  String nextPrayerName,
-  Duration remainingTime,
-) {
+    Map<String, String> times,
+    String nextPrayerName,
+    Duration remainingTime,
+    bool isAdhanPlaying,
+    ) {
   final orderedPrayers = [
-    {'name': 'العشاء', 'time': times['العشاء'] ?? '--:--'},
-    {'name': 'المغرب', 'time': times['المغرب'] ?? '--:--'},
-    {'name': 'العصر', 'time': times['العصر'] ?? '--:--'},
-    {'name': 'الظهر', 'time': times['الظهر'] ?? '--:--'},
     {'name': 'الفجر', 'time': times['الفجر'] ?? '--:--'},
+    {'name': 'الظهر', 'time': times['الظهر'] ?? '--:--'},
+    {'name': 'العصر', 'time': times['العصر'] ?? '--:--'},
+    {'name': 'المغرب', 'time': times['المغرب'] ?? '--:--'},
+    {'name': 'العشاء', 'time': times['العشاء'] ?? '--:--'},
   ];
 
   return Container(
     padding: const EdgeInsets.all(16),
     child: Column(
       children: [
-        const SizedBox(height: 30),
-
+        const SizedBox(height: 20),
         Card(
           elevation: 4,
           shape: RoundedRectangleBorder(
@@ -32,9 +31,13 @@ Widget buildPrayerTimesUI(
             padding: const EdgeInsets.all(16),
             child: Column(
               children: [
-                const Text(
-                  'الوقت الحالي',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                Text(
+                  isAdhanPlaying ? 'الأذان الآن' : 'الوقت الحالي',
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.teal,
+                  ),
                 ),
                 const SizedBox(height: 8),
                 Text(
@@ -42,47 +45,56 @@ Widget buildPrayerTimesUI(
                   style: const TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
-                    color: Colors.teal,
                   ),
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'متبقي حتى صلاة $nextPrayerName',
+                  isAdhanPlaying
+                      ? 'صلاة $nextPrayerName'
+                      : 'متبقي حتى صلاة $nextPrayerName',
                   style: const TextStyle(fontSize: 16, color: Colors.grey),
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  'الوقت المتبقي: ${remainingTime.inHours.toString().padLeft(2, '0')}:${(remainingTime.inMinutes % 60).toString().padLeft(2, '0')}:${(remainingTime.inSeconds % 60).toString().padLeft(2, '0')}',
+                  isAdhanPlaying
+                      ? 'حان وقت الصلاة'
+                      : 'الوقت المتبقي: ${remainingTime.inHours.toString().padLeft(2, '0')}:${(remainingTime.inMinutes % 60).toString().padLeft(2, '0')}',
                   style: const TextStyle(fontSize: 20),
                 ),
               ],
             ),
           ),
         ),
-        const SizedBox(height: 50),
+        const SizedBox(height: 20),
         Expanded(
           child: ListView.builder(
             itemCount: orderedPrayers.length,
             itemBuilder: (context, index) {
               final prayer = orderedPrayers[index];
+              final isCurrent = isAdhanPlaying && nextPrayerName == prayer['name'];
               return Container(
                 margin: const EdgeInsets.only(bottom: 8),
                 decoration: BoxDecoration(
-                  color: ayahHighlight,
+                  color: isCurrent ? Colors.teal[100] : ayahHighlight,
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: ListTile(
+                  leading: isCurrent
+                      ? const Icon(Icons.volume_up, color: Colors.teal)
+                      : null,
                   title: Text(
                     prayer['time']!,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 20,
-                      fontWeight: FontWeight.w600,
+                      fontWeight: isCurrent ? FontWeight.bold : FontWeight.w600,
+                      color: isCurrent ? Colors.teal : null,
                     ),
                   ),
-
                   trailing: Text(
                     prayer['name']!,
-                    style: surahNumberCircleStyle(),
+                    style: surahNumberCircleStyle().copyWith(
+                      color: isCurrent ? Colors.teal : null,
+                    ),
                   ),
                 ),
               );

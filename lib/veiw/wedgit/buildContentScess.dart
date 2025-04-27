@@ -44,14 +44,14 @@ Widget buildContentSuccess(
         ),
         body: Column(
           children: [
-            SizedBox(height: 16),
+            SizedBox(height: 32),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 4.0),
+              padding: const EdgeInsets.symmetric(horizontal: 0.0),
               child: Image.asset(
-                color: colorQuranPages(context),
                 page.imageUrl,
                 width: double.infinity,
                 fit: BoxFit.fitWidth,
+
                 errorBuilder: (ctx, err, _) => Container(
                   color: Colors.grey[200],
                   child: const Center(child: Icon(Icons.image_not_supported)),
@@ -60,6 +60,7 @@ Widget buildContentSuccess(
             ),
           ],
         ),
+
       );
     },
   );

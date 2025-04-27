@@ -1,6 +1,11 @@
 import 'package:dio/dio.dart';
+import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter/material.dart';
+import '../PrayerTime.dart';
+
 class PrayerService {
   final Dio _dio;
+  final AudioPlayer _audioPlayer = AudioPlayer();
 
   PrayerService({Dio? dio}) : _dio = dio ?? Dio(BaseOptions(
     baseUrl: 'https://api.aladhan.com/v1',
@@ -23,6 +28,19 @@ class PrayerService {
     } catch (e) {
       throw 'فشل في جلب مواقيت الصلاة: $e';
     }
+  }
+
+  Future<void> playAdhan(String prayerName) async {
+    try {
+      await _audioPlayer.stop();
+      await _audioPlayer.play(AssetSource('adhan/$prayerName.mp3'));
+    } catch (e) {
+      debugPrint('Error playing adhan: $e');
+    }
+  }
+
+  void dispose() {
+    _audioPlayer.dispose();
   }
 
   Map<String, String> _parsePrayerTimes(Map<String, dynamic> timings) {

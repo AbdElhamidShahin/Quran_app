@@ -1,17 +1,61 @@
 import 'package:flutter/material.dart';
+import 'package:shimmer/shimmer.dart';
 
 Widget buildLoadingShimmer() {
-  return ListView.builder(
-    itemCount: 8,
-    itemBuilder: (context, index) {
-      return Container(
-        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        height: 100,
-        decoration: BoxDecoration(
-          color: Colors.grey[200],
-          borderRadius: BorderRadius.circular(8),
+  return Shimmer.fromColors(
+    baseColor: Colors.grey[300]!,
+    highlightColor: Colors.grey[100]!,
+    child: Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        children: List.generate(6, (index) => _buildShimmerItem(index)),
+      ),
+    ),
+  );
+}
+
+Widget _buildShimmerItem(int index) {
+  return Container(
+    margin: const EdgeInsets.only(bottom: 20),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Placeholder for header
+        Container(
+            width: 120,
+            height: 20,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(4),
+            ),),
+
+            const SizedBox(height: 12),
+            // Placeholder for content
+            Container(
+
+
+
+
+
+                width: double.infinity,
+                height: 80,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+            ),
+                // Placeholder for footer
+                if (index % 2 == 0) ...[
+            const SizedBox(height: 12),
+        Container(
+          width: 200,
+          height: 16,
+          decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(4)),
         ),
-      );
-    },
+      ]
+      ],
+    ),
   );
 }

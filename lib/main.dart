@@ -7,14 +7,13 @@ import 'package:quran_app/veiw/screens/TheListScreen.dart';
 import 'package:quran_app/veiw_model/helper/saveLastReadPage.dart';
 import 'package:quran_app/veiw_model/helper/thems/ThemeProviderDarkMode.dart';
 import 'package:quran_app/veiw_model/helper/thems/color.dart';
-
 import 'model/ItemProvider.dart';
 import 'model/api/apiServise.dart';
 import 'model/bloc/bloc.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
 
+  WidgetsFlutterBinding.ensureInitialized();
 
   runApp(
     MultiProvider(

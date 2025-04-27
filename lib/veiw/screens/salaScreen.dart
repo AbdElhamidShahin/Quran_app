@@ -1,9 +1,10 @@
 import 'dart:async';
-import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import '../../model/PrayerTime.dart';
+import '../../model/api/apiServise.dart';
 import '../../model/bloc/bloc.dart';
 import '../../model/bloc/states.dart';
 import '../../veiw_model/helper/Position/getPosition.dart';
@@ -19,34 +20,42 @@ class PrayerTimesScreen extends StatefulWidget {
 }
 
 class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
+  late final PrayerService _prayerService;
   String nextPrayerName = '';
   Duration remainingTime = Duration.zero;
   late Timer _timer;
   Map<String, String> _prayerTimes = {};
-  final AudioPlayer _audioPlayer = AudioPlayer();
+  bool _isAdhanPlaying = false;
+
   @override
   void initState() {
     super.initState();
+    _prayerService = PrayerService();
     fetchData();
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      if (nextPrayerName.isNotEmpty) {
-        _calculateNextPrayerTimes();
-      }
+      _checkPrayerTimes();
     });
+  }
+
+  Future<void> _checkPrayerTimes() async {
+    final now = DateTime.now();
+    final currentTime = DateFormat('HH:mm').format(now);
+
+    for (final entry in _prayerTimes.entries) {
+      if (currentTime == entry.value && !_isAdhanPlaying) {
+        setState(() => _isAdhanPlaying = true);
+        await _prayerService.playAdhan(entry.key);
+        setState(() => _isAdhanPlaying = false);
+      }
+    }
+    _calculateNextPrayerTimes();
   }
 
   @override
   void dispose() {
     _timer.cancel();
-    _audioPlayer.dispose();
+    _prayerService.dispose();
     super.dispose();
-  }
-
-  Future<void> playAdhanSound() async {
-    final adhanSoundUrl = 'assets/4032.mp3'; // ضع الرابط هنا
-    await _audioPlayer.play(
-      UrlSource(adhanSoundUrl),
-    );
   }
 
   Future<void> fetchData() async {
@@ -59,9 +68,9 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
       context.read<PrayerBloc>().add(
         FetchPrayerTimes(lat: 30.0444, lng: 31.2357),
       );
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text(e.toString())));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(e.toString())),
+      );
     }
   }
 
@@ -87,27 +96,15 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
         final hour = int.parse(timeParts[0]);
         final minute = int.parse(timeParts[1]);
 
-        var prayerDateTime = DateTime(
-          now.year,
-          now.month,
-          now.day,
-          hour,
-          minute,
-        );
+        var prayerDateTime = DateTime(now.year, now.month, now.day, hour, minute);
 
         if (prayerDateTime.isBefore(now)) {
           if (prayer['name'] == 'العشاء') {
             final fajrTime = prayersInOrder[0]['time']?.split(':');
             if (fajrTime != null && fajrTime.length == 2) {
-              final fajrHour = int.parse(fajrTime[0]);
-              final fajrMinute = int.parse(fajrTime[1]);
               prayerDateTime = DateTime(
-                now.year,
-                now.month,
-                now.day + 1,
-                fajrHour,
-                fajrMinute,
-              );
+                  now.year, now.month, now.day + 1,
+                  int.parse(fajrTime[0]), int.parse(fajrTime[1]));
               nextPrayer = prayersInOrder[0]['name']!;
               nextPrayerDateTime = prayerDateTime;
               break;
@@ -116,8 +113,7 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
           continue;
         }
 
-        if (nextPrayerDateTime == null ||
-            prayerDateTime.isBefore(nextPrayerDateTime)) {
+        if (nextPrayerDateTime == null || prayerDateTime.isBefore(nextPrayerDateTime)) {
           nextPrayerDateTime = prayerDateTime;
           nextPrayer = prayer['name']!;
         }
@@ -131,16 +127,13 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
         nextPrayerName = nextPrayer;
         remainingTime = nextPrayerDateTime!.difference(now);
       });
-
-      // تشغيل الأذان عند وقت الصلاة
-      playAdhanSound();
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: 'مواقيت الصلاه'),
+      appBar: CustomAppBar(title: 'مواقيت الصلاة'),
       body: BlocBuilder<PrayerBloc, PrayerState>(
         builder: (context, state) {
           if (state is PrayerLoadingState) {
@@ -156,6 +149,7 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
               state.times,
               nextPrayerName,
               remainingTime,
+              _isAdhanPlaying,
             );
           } else if (state is PrayerErrorState) {
             return Center(
