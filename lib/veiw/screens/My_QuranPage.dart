@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import '../../model/item.dart';
 import '../../model/JsonScreen.dart';
 import '../../veiw_model/helper/thems/TextStyle.dart';
@@ -43,12 +44,28 @@ class MyQuranPage extends StatelessWidget {
 
             final suras = snapshot.data!;
 
-            return ListView.builder(
-              padding: const EdgeInsets.all(16),
-              itemCount: suras.length,
-              itemBuilder: (BuildContext context, int index) {
-                return CustomQuranPage(index: index, sura: suras[index]);
-              },
+            return AnimationLimiter(
+              child: ListView.builder(
+                padding: const EdgeInsets.all(16),
+                itemCount: suras.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return AnimationConfiguration.staggeredList(
+                    position: index,
+                    duration: const Duration(milliseconds: 1000),
+
+                    child: SlideAnimation(
+                      verticalOffset: 50.0,
+
+                      child: FadeInAnimation(
+                        child: CustomQuranPage(
+                          index: index,
+                          sura: suras[index],
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
             );
           },
         ),

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -26,37 +27,45 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
   late Timer _timer;
   Map<String, String> _prayerTimes = {};
   bool _isAdhanPlaying = false;
+  late AudioPlayer _audioPlayer;
 
   @override
   void initState() {
     super.initState();
-    _prayerService = PrayerService();
-    fetchData();
-    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      _checkPrayerTimes();
+    _audioPlayer = AudioPlayer();
+    _prayerService = PrayerService(); // مهم تعرفه قبل الاستخدام
+    fetchData();  // <== انت نسيتها !
+
+    _audioPlayer.play(AssetSource('4032.mp3')).then((_) {
+      debugPrint('تم تشغيل صوت الأذان');
     });
+
   }
 
   Future<void> _checkPrayerTimes() async {
     final now = DateTime.now();
     final currentTime = DateFormat('HH:mm').format(now);
 
+    debugPrint('Current time: $currentTime'); // اطبع الوقت الحالي للتأكد
+
     for (final entry in _prayerTimes.entries) {
+      debugPrint('Checking prayer time for ${entry.key}: ${entry.value}');
+
       if (currentTime == entry.value && !_isAdhanPlaying) {
         setState(() => _isAdhanPlaying = true);
         await _prayerService.playAdhan(entry.key);
         setState(() => _isAdhanPlaying = false);
       }
     }
-    _calculateNextPrayerTimes();
   }
 
   @override
   void dispose() {
-    _timer.cancel();
-    _prayerService.dispose();
+    _audioPlayer.stop();
+    _audioPlayer.dispose();
     super.dispose();
   }
+
 
   Future<void> fetchData() async {
     try {
@@ -171,7 +180,7 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
                     'يرجى التحقق من الشبكة والمحاولة مرة أخرى',
                     style: TextStyle(fontSize: 14, color: Colors.grey),
                   ),
-                ],
+                ]
               ),
             );
           }

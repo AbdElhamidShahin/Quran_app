@@ -29,16 +29,9 @@ class PrayerService {
       throw 'فشل في جلب مواقيت الصلاة: $e';
     }
   }
-
   Future<void> playAdhan(String prayerName) async {
-    try {
-      await _audioPlayer.stop();
-      await _audioPlayer.play(AssetSource('adhan/$prayerName.mp3'));
-    } catch (e) {
-      debugPrint('Error playing adhan: $e');
-    }
+    await _audioPlayer.play(AssetSource('assets/4032.mp3'));
   }
-
   void dispose() {
     _audioPlayer.dispose();
   }
