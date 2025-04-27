@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../model/item.dart';
 import '../model/JsonScreen.dart';
-
+import '../veiw_model/helper/thems/TextStyle.dart';
+import '../veiw_model/helper/thems/color.dart';
 import 'wedgit/buildLoadingShimmer.dart';
 import 'wedgit/buildEmptyWidget.dart';
 import 'wedgit/buildContentScess.dart';
@@ -28,7 +29,6 @@ class QuranDetailsScreen extends StatefulWidget {
   @override
   State<QuranDetailsScreen> createState() => _QuranDetailsScreenState();
 }
-
 class _QuranDetailsScreenState extends State<QuranDetailsScreen> {
   late PageController _pageController;
   late Future<List<Item>> _pagesFuture;
@@ -37,8 +37,7 @@ class _QuranDetailsScreenState extends State<QuranDetailsScreen> {
   @override
   void initState() {
     super.initState();
-    _pagesFuture =
-        fetchQuranPagesBySurah(widget.surahNumber) ?? Future.value([]);
+    _pagesFuture = fetchQuranPagesBySurah(widget.surahNumber) ?? Future.value([]);
     _pagesFuture.then((pages) {
       final pageIndex = pages.indexWhere((p) => p.page == widget.pageNumber);
       _currentPageIndex = pageIndex != -1 ? pageIndex : 0;

@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 
 Color backgroundColor(BuildContext context) {
   return Theme.of(context).brightness == Brightness.dark
-      ? const Color(0xFF121B22)
-      : Color(0xFFE0EFEC);
+      ? const Color(0xFFE0EFEC)
+      : Color(0xFF000000);
 }
 
 Color colorQuranPages(BuildContext context) {
