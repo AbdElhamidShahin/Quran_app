@@ -18,11 +18,7 @@ class HomePage extends StatelessWidget {
     var height = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      drawer: Drawer(
-        child: Column(
-          children: [Expanded(child: Setings())],
-        ),
-      ),
+      drawer: Drawer(child: Column(children: [Expanded(child: Setings())])),
       appBar: AppBar(
         scrolledUnderElevation: 0,
         elevation: 0,
@@ -31,12 +27,13 @@ class HomePage extends StatelessWidget {
         centerTitle: true,
         actions: [
           Builder(
-            builder: (context) => IconButton(
-              icon: Icon(Icons.menu, color: primaryColor),
-              onPressed: () {
-                Scaffold.of(context).openDrawer();
-              },
-            ),
+            builder:
+                (context) => IconButton(
+                  icon: Icon(Icons.menu, color: primaryColor),
+                  onPressed: () {
+                    Scaffold.of(context).openDrawer();
+                  },
+                ),
           ),
         ],
         title: Text("القرأن الكريم", style: appBarTitleStyle()),
@@ -60,8 +57,8 @@ class HomePage extends StatelessWidget {
               ),
               SizedBox(height: 12),
 
-
-              LastReadWidget(width:width ,height: height,)        ,      Dashboard(height: height),
+              LastReadWidget(width: width, height: height),
+              Dashboard(height: height),
               SizedBox(height: 24),
             ],
           ),

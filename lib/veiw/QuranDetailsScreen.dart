@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../model/item.dart';
 import '../model/JsonScreen.dart';
-import '../veiw_model/helper/thems/TextStyle.dart';
-import '../veiw_model/helper/thems/color.dart';
+
 import 'wedgit/buildLoadingShimmer.dart';
-import 'wedgit/buildErrorWidget.dart';
 import 'wedgit/buildEmptyWidget.dart';
 import 'wedgit/buildContentScess.dart';
 
@@ -15,14 +13,16 @@ class QuranDetailsScreen extends StatefulWidget {
   final String surahName;
   final String? surahNameEn;
   final String? transliteration;
+  List<Item>? pages;
 
-  const QuranDetailsScreen({
+  QuranDetailsScreen({
     super.key,
     required this.pageNumber,
     required this.surahNumber,
     required this.surahName,
     this.surahNameEn,
     this.transliteration,
+    this.pages,
   });
 
   @override
@@ -31,19 +31,21 @@ class QuranDetailsScreen extends StatefulWidget {
 
 class _QuranDetailsScreenState extends State<QuranDetailsScreen> {
   late PageController _pageController;
-  int currentPage = 0;
+  late Future<List<Item>> _pagesFuture;
+  int _currentPageIndex = 0;
 
   @override
   void initState() {
     super.initState();
-
-    currentPage = widget.pageNumber;
-
-    _pageController = PageController(initialPage: widget.pageNumber);
-    _saveLastReadPage(widget.pageNumber);
+    _pagesFuture =
+        fetchQuranPagesBySurah(widget.surahNumber) ?? Future.value([]);
+    _pagesFuture.then((pages) {
+      final pageIndex = pages.indexWhere((p) => p.page == widget.pageNumber);
+      _currentPageIndex = pageIndex != -1 ? pageIndex : 0;
+      _pageController = PageController(initialPage: _currentPageIndex);
+    });
   }
 
-  // دالة لحفظ الصفحة الأخيرة في SharedPreferences
   Future<void> _saveLastReadPage(int pageNumber) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setInt('last_read_page', pageNumber);
@@ -53,65 +55,29 @@ class _QuranDetailsScreenState extends State<QuranDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: backgroundColor(context),
-        title: Column(
-          children: [
-            Text("سوره ${widget.surahName}", style: appBarTitleStyle()),
-          ],
-        ),
-        actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: Icon(Icons.arrow_forward_outlined),
-          ),
-        ],
-        leading: Center(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12),
-            child: Text("${currentPage}", style: appBodyStyle()),
-          ),
-        ),
-        centerTitle: true,
-      ),
-      body: PageView.builder(
-        controller: _pageController,
-        itemCount: 604,
-        onPageChanged: (index) {
-          setState(() {
-            currentPage = index;
+    return FutureBuilder<List<Item>>(
+      future: _pagesFuture,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return buildLoadingShimmer();
+        }
+        if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          return buildEmptyWidget();
+        }
 
-          });
-          _saveLastReadPage(index);
-        },
-        itemBuilder: (context, index) {
-          return FutureBuilder<List<Item>>(
-            future: fetchQuranPagesBySurah(widget.surahNumber),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return buildLoadingShimmer();
-              }
-              if (snapshot.hasError) {
-                return buildErrorWidget(snapshot.error.toString());
-              }
-              if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                return buildEmptyWidget();
-              }
-
-              return buildContentSuccess(
-                context,
-                snapshot.data!,
-                widget.surahName,
-                surahNameEn: widget.surahNameEn,
-                transliteration: widget.transliteration,
-              );
-            },
-          );
-        },
-      ),
+        final pages = snapshot.data!;
+        return buildContentSuccess(
+          context,
+          pages,
+          widget.surahName,
+          pageController: _pageController,
+          onPageChanged: (index) {
+            _saveLastReadPage(pages[index].page); // Save the actual page number
+          },
+          surahNameEn: widget.surahNameEn,
+          transliteration: widget.transliteration,
+        );
+      },
     );
   }
 }

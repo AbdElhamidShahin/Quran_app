@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../veiw_model/helper/saveLastReadPage.dart';
 import '../../veiw_model/helper/thems/TextStyle.dart';
 import '../../veiw_model/helper/thems/color.dart';
@@ -22,26 +23,22 @@ class LastReadWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
-      onTap: () async {
-        final lastRead = await getLastReadPage();
+        onTap: () async {
+      final prefs = await SharedPreferences.getInstance();
+      final lastPage = prefs.getInt('last_read_page') ?? 1; // Default to page 1
+      final lastSurah = prefs.getInt('last_read_surah') ?? 1;
+      final lastSurahName = prefs.getString('last_read_surah_name') ?? 'الفاتحة';
 
-        if (lastRead != null) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => QuranDetailsScreen(
-                pageNumber: lastRead['page'],
-                surahNumber: lastRead['surah'],
-                surahName: lastRead['surahName'],
-                // لو حابب تبعت En Name أو Transliteration ضيفهم كمان لو كنت حافظهم
-              ),
-            ),
-          );
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text("لا يوجد قراءة محفوظة")),
-          );
-        }
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => QuranDetailsScreen(
+            pageNumber: lastPage, // Pass the actual page number
+            surahNumber: lastSurah,
+            surahName: lastSurahName,
+          ),
+        ),
+      );
       },
       child: Container(
         height: height * .18,
