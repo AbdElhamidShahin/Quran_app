@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../../model/azkarModel/ItemAzkatr.dart';
 import '../../model/azkarModel/SearchScreen.dart';
 import '../../model/azkarModel/azkarJsonScreen.dart';
@@ -13,8 +14,7 @@ class AzkarPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:
-      AppBar(
+      appBar: AppBar(
         title: Column(
           children: [
             // استخدام TextField كبديل لشريط البحث
@@ -32,6 +32,12 @@ class AzkarPage extends StatelessWidget {
                 ],
               ),
               child: TextField(
+                keyboardType: TextInputType.text,
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(
+                    RegExp('[a-zA-Z0-9\u0600-\u06FF\s]'),
+                  ), // يسمح بالحروف الإنجليزية والأرقام والحروف العربية
+                ],
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   hintText: 'Discover your place',
