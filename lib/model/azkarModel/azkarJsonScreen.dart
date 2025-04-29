@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'ItemAzkatr.dart';
 
 Future<List<AzkarCategoryModel>> fetchAzkarCategoryFromJson() async {
+
   try {
     final String response = await rootBundle.loadString('assets/azkar.json');
     final List<dynamic> data = json.decode(response); // assuming it's a list
@@ -13,5 +14,6 @@ Future<List<AzkarCategoryModel>> fetchAzkarCategoryFromJson() async {
   } catch (e) {
     print("Error fetching data: $e");
     throw e;
+
   }
 }

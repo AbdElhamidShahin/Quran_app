@@ -36,7 +36,6 @@ Future<List<Item>> fetchSuraDetails() async {
   surahList.sort((a, b) => a.surahNumber.compareTo(b.surahNumber));
   return surahList;
 }
-
 Future<List<Item>> fetchQuranPagesBySurah(int surahNumber) async {
   try {
     final response = await rootBundle.loadString('assets/pagesQuran.json');

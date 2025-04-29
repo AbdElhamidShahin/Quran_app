@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../model/azkarModel/ItemAzkatr.dart';
+import '../../model/azkarModel/SearchScreen.dart';
 import '../../model/azkarModel/azkarJsonScreen.dart';
 import '../../veiw_model/helper/thems/TextStyle.dart';
 import '../../veiw_model/helper/thems/color.dart';
@@ -12,7 +13,46 @@ class AzkarPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: ('الأذكار')),
+      appBar:
+      AppBar(
+        title: Column(
+          children: [
+            // استخدام TextField كبديل لشريط البحث
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.3),
+                    spreadRadius: 2,
+                    blurRadius: 5,
+                  ),
+                ],
+              ),
+              child: TextField(
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  hintText: 'Discover your place',
+                  prefixIcon: const Icon(Icons.search, color: Colors.grey),
+                  hintStyle: TextStyle(
+                    color: Colors.grey[400],
+                    fontStyle: FontStyle.italic,
+                  ),
+                ),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => SearchScreen()),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+      // CustomAppBar(title: ('الأذكار')),
       body: FutureBuilder<List<AzkarCategoryModel>>(
         future: fetchAzkarCategoryFromJson(),
         builder: (context, snapshot) {
@@ -41,10 +81,10 @@ class AzkarPage extends StatelessWidget {
             padding: const EdgeInsets.all(8),
             itemCount: categories.length,
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2, // عدد الأعمدة
-              crossAxisSpacing: 0, // المسافة الأفقية بين العناصر
-              mainAxisSpacing: 0, // المسافة الرأسية بين العناصر
-              childAspectRatio: 1.2 // نسبة الطول إلى العرض للعنصر الواحد
+              crossAxisCount: 2,
+              crossAxisSpacing: 0,
+              mainAxisSpacing: 0,
+              childAspectRatio: 1.2,
             ),
             itemBuilder: (BuildContext context, int index) {
               return CustomAzkarPage(azkarCategory: categories[index]);

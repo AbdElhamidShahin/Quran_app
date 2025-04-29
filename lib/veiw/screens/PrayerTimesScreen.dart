@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import '../../model/PrayerTime.dart';
 import '../../model/api/apiServise.dart';
@@ -32,26 +31,38 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
   @override
   void initState() {
     super.initState();
+    _prayerService = PrayerService();
     _audioPlayer = AudioPlayer();
-    _prayerService = PrayerService(); // مهم تعرفه قبل الاستخدام
-    fetchData();  // <== انت نسيتها !
-
-    _audioPlayer.play(AssetSource('4032.mp3')).then((_) {
-      debugPrint('تم تشغيل صوت الأذان');
+    fetchData();
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (_prayerTimes.isNotEmpty) {
+        _calculateNextPrayerTimes();
+        checkPrayerTimes();
+      }
     });
-
   }
 
-  Future<void> _checkPrayerTimes() async {
+  Future<void> checkPrayerTimes() async {
     final now = DateTime.now();
-    final currentTime = DateFormat('HH:mm').format(now);
-
-    debugPrint('Current time: $currentTime'); // اطبع الوقت الحالي للتأكد
 
     for (final entry in _prayerTimes.entries) {
-      debugPrint('Checking prayer time for ${entry.key}: ${entry.value}');
+      final timeParts = entry.value.split(':');
+      if (timeParts.length != 2) continue;
 
-      if (currentTime == entry.value && !_isAdhanPlaying) {
+      final prayerHour = int.tryParse(timeParts[0]);
+      final prayerMinute = int.tryParse(timeParts[1]);
+      if (prayerHour == null || prayerMinute == null) continue;
+
+      final prayerTime = DateTime(
+        now.year,
+        now.month,
+        now.day,
+        prayerHour,
+        prayerMinute,
+      );
+
+      if (now.difference(prayerTime).inSeconds.abs() < 5 && !_isAdhanPlaying) {
+        // لو الفرق أقل من 5 ثواني نشغل الأذان
         setState(() => _isAdhanPlaying = true);
         await _prayerService.playAdhan(entry.key);
         setState(() => _isAdhanPlaying = false);
@@ -63,9 +74,9 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
   void dispose() {
     _audioPlayer.stop();
     _audioPlayer.dispose();
+    _timer.cancel(); // إلغاء التايمر عند مغادرة الصفحة
     super.dispose();
   }
-
 
   Future<void> fetchData() async {
     try {
@@ -77,9 +88,9 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
       context.read<PrayerBloc>().add(
         FetchPrayerTimes(lat: 30.0444, lng: 31.2357),
       );
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(e.toString())),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(e.toString())));
     }
   }
 
@@ -105,15 +116,25 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
         final hour = int.parse(timeParts[0]);
         final minute = int.parse(timeParts[1]);
 
-        var prayerDateTime = DateTime(now.year, now.month, now.day, hour, minute);
+        var prayerDateTime = DateTime(
+          now.year,
+          now.month,
+          now.day,
+          hour,
+          minute,
+        );
 
         if (prayerDateTime.isBefore(now)) {
           if (prayer['name'] == 'العشاء') {
             final fajrTime = prayersInOrder[0]['time']?.split(':');
             if (fajrTime != null && fajrTime.length == 2) {
               prayerDateTime = DateTime(
-                  now.year, now.month, now.day + 1,
-                  int.parse(fajrTime[0]), int.parse(fajrTime[1]));
+                now.year,
+                now.month,
+                now.day + 1,
+                int.parse(fajrTime[0]),
+                int.parse(fajrTime[1]),
+              );
               nextPrayer = prayersInOrder[0]['name']!;
               nextPrayerDateTime = prayerDateTime;
               break;
@@ -122,7 +143,8 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
           continue;
         }
 
-        if (nextPrayerDateTime == null || prayerDateTime.isBefore(nextPrayerDateTime)) {
+        if (nextPrayerDateTime == null ||
+            prayerDateTime.isBefore(nextPrayerDateTime)) {
           nextPrayerDateTime = prayerDateTime;
           nextPrayer = prayer['name']!;
         }
@@ -136,6 +158,11 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
         nextPrayerName = nextPrayer;
         remainingTime = nextPrayerDateTime!.difference(now);
       });
+
+      // تشغيل الأذان عند وقت الصلاة
+      if (remainingTime.inSeconds <= 0 && remainingTime.inSeconds >= -60) {
+        _prayerService.playAdhan(nextPrayerName);
+      }
     }
   }
 
@@ -163,24 +190,24 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
           } else if (state is PrayerErrorState) {
             return Center(
               child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Lottie.asset(
-                      'assets/Animation - 1745055052923.json',
-                      width: 250,
-                      height: 250,
-                    ),
-                    const SizedBox(height: 20),
-                    const Text(
-                      'لا يوجد اتصال بالإنترنت',
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(height: 10),
-                    const Text(
-                      'يرجى التحقق من الشبكة والمحاولة مرة أخرى',
-                      style: TextStyle(fontSize: 14, color: Colors.grey),
-                    ),
-                  ]
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Lottie.asset(
+                    'assets/Animation - 1745055052923.json',
+                    width: 250,
+                    height: 250,
+                  ),
+                  const SizedBox(height: 20),
+                  const Text(
+                    'لا يوجد اتصال بالإنترنت',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 10),
+                  const Text(
+                    'يرجى التحقق من الشبكة والمحاولة مرة أخرى',
+                    style: TextStyle(fontSize: 14, color: Colors.grey),
+                  ),
+                ],
               ),
             );
           }

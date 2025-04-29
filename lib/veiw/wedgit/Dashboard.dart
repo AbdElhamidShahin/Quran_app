@@ -4,7 +4,7 @@ import 'package:quran_app/veiw/wedgit/CustomContainer.dart';
 
 import '../../veiw_model/helper/thems/color.dart';
 import '../screens/My_QuranPage.dart';
-import '../screens/salaScreen.dart';
+import '../screens/PrayerTimesScreen.dart';
 import '../screens/sephaScreen.dart';
 
 class Dashboard extends StatelessWidget {

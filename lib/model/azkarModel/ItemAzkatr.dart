@@ -22,6 +22,15 @@ class AzkarModel {
       filename: json['filename'],
     );
   }
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'text': text,
+      'count': count,
+      'audio': audio,
+      'filename': filename,
+    };
+  }
 }
 
 class AzkarCategoryModel {
@@ -51,5 +60,14 @@ class AzkarCategoryModel {
       filename: json['filename'],
       array: azkarList,
     );
+  }
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'category': category,
+      'audio': audio,
+      'filename': filename,
+      'array': array.map((azkar) => azkar.toJson()).toList(),
+    };
   }
 }

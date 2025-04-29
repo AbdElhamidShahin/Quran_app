@@ -7,7 +7,7 @@ import '../../veiw_model/helper/thems/color.dart';
 import '../QuranDetailsScreen.dart';
 import '../wedgit/Dashboard.dart';
 import '../wedgit/LastReadWidget.dart';
-import 'TheListScreen.dart';
+import 'Settings.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
