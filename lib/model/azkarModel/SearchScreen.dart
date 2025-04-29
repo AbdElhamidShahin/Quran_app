@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import '../../veiw/screens/AzkarDetailsPage.dart' show AzkarDetailsPage;
+import '../../veiw/wedgit/CustomAzkarPage.dart';
+import '../../veiw_model/helper/thems/TextStyle.dart';
+import '../../veiw_model/helper/thems/color.dart';
+import '../suraMap.dart';
 import 'ItemAzkatr.dart';
 import 'azkarJsonScreen.dart';
 
@@ -11,10 +17,8 @@ class _SearchScreenState extends State<SearchScreen> {
   List<Map<String, dynamic>> results = [];
   String query = "";
   void search(String query) async {
-    var resultsList = await ExerciseService.searchExercises(query);
-    setState(() {
-      results = resultsList;
-    });
+    var resultsList = await ItemService.searchExercises(query);
+    results = resultsList;
   }
 
   @override
@@ -25,7 +29,7 @@ class _SearchScreenState extends State<SearchScreen> {
         child: Column(
           children: [
             Container(
-              margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
                 color: Colors.white,
@@ -44,53 +48,113 @@ class _SearchScreenState extends State<SearchScreen> {
                   });
                   search(query);
                 },
+                textDirection:
+                    TextDirection.rtl, // تحديد اتجاه الكتابة من اليمين لليسار
+                keyboardType: TextInputType.text,
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(
+                    RegExp('[a-zA-Z0-9\u0600-\u06FF\s]'),
+                  ),
+                ],
                 decoration: InputDecoration(
                   border: InputBorder.none,
-                  hintText: 'Discover your place',
-                  prefixIcon: const Icon(Icons.search, color: Colors.grey),
-                  hintStyle: TextStyle(
-                    color: Colors.grey[400],
-                    fontStyle: FontStyle.italic,
+                  hintText: 'ابحث عن الاذكار',
+                  hintStyle: selectedAyahStyle(),
+
+                  prefixIcon: const Icon(Icons.search, color: primaryDark),
+                  prefixIconConstraints: BoxConstraints(
+                    minWidth: 40, // يمكنك تعديل الحجم حسب الحاجة
                   ),
                 ),
+                textAlign: TextAlign.right,
               ),
             ),
 
-            // عرض النتائج
             Expanded(
               child: GridView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
-                  childAspectRatio: .90,
-                  mainAxisSpacing: 18,
-                  crossAxisSpacing: 18,
+                  crossAxisSpacing: 0,
+                  mainAxisSpacing: 0,
                 ),
                 itemCount: results.length,
                 itemBuilder: (context, index) {
                   final azkar = results[index];
                   final categoryName = azkar['category'] ?? 'no name';
 
-                  return GestureDetector(
+                  return Directionality(
+                    textDirection: TextDirection.rtl,
                     child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Colors.white,
+                      margin: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 8,
                       ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 8),
-                              child: Text(
-                                categoryName,
-                                style: const TextStyle(fontSize: 16),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(12),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.05),
+                            blurRadius: 6,
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
+                      ),
+                      child: Material(
+                        color: Colors.transparent,
+
+                        child: GestureDetector(
+                          onTap: () {
+                            final azkarCategory = AzkarCategoryModel.fromJson(
+                              azkar,
+                            );
+
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder:
+                                    (context) =>
+                                        AzkarDetailsPage(azkar: azkarCategory),
                               ),
+                            );
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.all(16),
+                            child: Column(
+                              textDirection: TextDirection.rtl,
+                              children: [
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    textDirection: TextDirection.rtl,
+                                    children: [
+                                      Text(
+                                        categoryName,
+                                        style: sajdaMarkerStyle(),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                const SizedBox(height: 16),
+
+                                Container(
+                                  width: 48,
+                                  height: 48,
+                                  decoration: BoxDecoration(
+                                    color: primaryColor.withOpacity(0.1),
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: Icon(
+                                    getCategoryIcon(categoryName),
+                                    color: primaryColor,
+                                    size: 24,
+                                  ),
+                                ),
+                              ],
                             ),
-                          ],
+                          ),
                         ),
                       ),
                     ),
@@ -105,19 +169,21 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 }
 
-class ExerciseService {
+class ItemService {
   static Future<List<Map<String, dynamic>>> searchExercises(
-      String query,
-      ) async {
-    final List<AzkarCategoryModel> allAzkar = await fetchAzkarCategoryFromJson();
+    String query,
+  ) async {
+    final List<AzkarCategoryModel> allAzkar =
+        await fetchAzkarCategoryFromJson();
 
-    final List<Map<String, dynamic>> results = allAzkar
-        .where(
-          (azkar) =>
-          azkar.category.toLowerCase().contains(query.toLowerCase()),
-    )
-        .map((azkar) => azkar.toJson())
-        .toList();
+    final List<Map<String, dynamic>> results =
+        allAzkar
+            .where(
+              (azkar) =>
+                  azkar.category.toLowerCase().contains(query.toLowerCase()),
+            )
+            .map((azkar) => azkar.toJson())
+            .toList();
 
     return results;
   }
