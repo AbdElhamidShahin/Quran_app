@@ -29,7 +29,10 @@ class AzkarDetailsPage extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(item.text,style: selectedAyahStyle(),),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(item.text,style: selectedAyahStyle(),),
+                    ),
 
                     Padding(
                       padding: const EdgeInsets.all(16.0),

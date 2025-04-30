@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../veiw_model/helper/AboutAppPage.dart';
 import '../../veiw_model/helper/thems/TextStyle.dart';
 import '../../veiw_model/helper/thems/ThemeProviderDarkMode.dart';
 import '../../veiw_model/helper/thems/color.dart';
@@ -24,7 +26,7 @@ class Setings extends StatelessWidget {
             title: 'سياسة الخصوصية',
             onPressed: () {
               _launchUrl(
-                "https://www.freeprivacypolicy.com/live/931d000c-ebf9-46ec-a72d-a619560a7173",
+                "https://www.privacypolicies.com/live/17f74ba9-74a8-486e-abc5-12e159600ce5",
               );
             },
           ),
@@ -33,16 +35,18 @@ class Setings extends StatelessWidget {
             icon: Icons.star,
             title: 'تقييم التطبيق',
             onPressed: () {
-              _launchUrl(
-                "https://play.google.com/store/apps/details?id=com.yourcompanyname.yourappname&fbclid=IwZXh0bgNhZW0CMTAAAR1zobhWeqLMCQDh_XmcPyNn7xHySVpG1MSrQs70NWFhZ_17bsnXV9936ls_aem_xXW5vyMyfUmyH9kifCQD1Q",
-              );
+              _launchUrl("");
             },
           ),
           _buildSettingsOption(
             context,
             icon: Icons.share,
             title: 'مشاركة',
-            onPressed: () {},
+            onPressed: () {
+              Share.share(
+                'https://play.google.com/store/apps/details?id=com.yourcompanyname.yourappname&fbclid=IwZXh0bgNhZW0CMTAAAR1zobhWeqLMCQDh_XmcPyNn7xHySVpG1MSrQs70NWFhZ_17bsnXV9936ls_aem_xXW5vyMyfUmyH9kifCQD1Q',
+              );
+            },
           ),
           _buildSettingsOption(
             context,
@@ -55,12 +59,12 @@ class Setings extends StatelessWidget {
           _buildSettingsOption(
             context,
             icon: Icons.question_answer_sharp,
-            title: 'أسئلة شائعة',
+            title: 'عن التطبيق',
             onPressed: () {
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(builder: (context) => FAQPage()),
-              // );
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => AboutAppPage()),
+              );
             },
           ),
           Card(
@@ -101,6 +105,14 @@ class Setings extends StatelessWidget {
               ),
             ),
           ),
+          _buildSettingsOption(
+            context,
+            icon: Icons.chat_outlined,
+            title: 'تواصل معنا',
+            onPressed: () {
+              _launchUrl("https://wa.me/message/UX62WBG5XFVCP1");
+            },
+          ),
         ],
       ),
     );
@@ -114,15 +126,12 @@ class Setings extends StatelessWidget {
   }) {
     return Card(
       color: Colors.white,
-      margin: const EdgeInsets.symmetric(vertical: 12),
+      margin: const EdgeInsets.symmetric(vertical: 8),
       elevation: 0,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: ListTile(
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: 16,
-          vertical: 12,
-        ),
-        leading: Icon(icon, color: primaryDark, size: 28),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        leading: Icon(icon, color: primaryDark, size: 24),
         title: Text(title, style: SttingsTextStyle()),
         onTap: onPressed,
       ),

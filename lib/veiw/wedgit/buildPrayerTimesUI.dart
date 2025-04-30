@@ -103,13 +103,13 @@ Widget buildPrayerTimesUI(
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: isCurrent ? FontWeight.bold : FontWeight.w600,
-                      color: isCurrent ? Colors.teal : null,
+                      color: primaryDark
                     ),
                   ),
                   trailing: Text(
                     prayer['name']!,
                     style: surahNumberCircleStyle().copyWith(
-                      color: isCurrent ? Colors.teal : null,
+                      color: primaryDark
                     ),
                   ),
                 ),

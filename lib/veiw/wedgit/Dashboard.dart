@@ -21,7 +21,7 @@ class Dashboard extends StatelessWidget {
             children: [
               CustomContainer(
                 height1: height * .27,
-                image: 'assets/icons/quran.png',
+                image: 'assets/Image HomeScreen/al-quran_15660541.png',
                 title: "القرأن الكريم",
                 color: quranColor,
                 onpressed: () {
@@ -33,19 +33,16 @@ class Dashboard extends StatelessWidget {
               ),
               CustomContainer(
                 height1: height * .20,
-                image: 'assets/icons/bookmark.png',
-                title: "مواقيت الصلاه ",
-                color: favoritesColor,
+                image: 'assets/Image HomeScreen/sujud_15044855.png',
+                title: "مواقيت الصلاه",
+                color: azkarColor,
                 onpressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
-                      builder: (context) => PrayerTimesScreen(),
-                    ),
+                    MaterialPageRoute(builder: (context) => PrayerTimesScreen()),
                   );
                 },
               ),
-              //CustomContainer(height1: height*.28, width1: width*.4)
             ],
           ),
         ),
@@ -55,7 +52,7 @@ class Dashboard extends StatelessWidget {
             children: [
               CustomContainer(
                 height1: height * .2,
-                image: 'assets/icons/unnamed.png',
+                image: 'assets/Image HomeScreen/unnamed.png',
                 title: "المسبحه",
                 color: qiblaColor,
                 onpressed: () {
@@ -67,9 +64,9 @@ class Dashboard extends StatelessWidget {
               ),
               CustomContainer(
                 height1: height * .27,
-                image: 'assets/icons/azkr.png',
+                image: 'assets/Image HomeScreen/islam_14415965.png',
                 title: "أذكار الصباح والمساء",
-                color: azkarColor,
+                color: lastReadingColor,
                 onpressed: () {
                   Navigator.push(
                     context,
@@ -77,8 +74,6 @@ class Dashboard extends StatelessWidget {
                   );
                 },
               ),
-
-              //CustomContainer(height1: height*.28, width1: width*.4)
             ],
           ),
         ),

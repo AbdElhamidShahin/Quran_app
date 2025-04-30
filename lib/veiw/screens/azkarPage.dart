@@ -40,7 +40,7 @@ class AzkarPage extends StatelessWidget {
               ],
               decoration: InputDecoration(
                 border: InputBorder.none,
-                hintText: 'ابحث عن الاذكار',
+                hintText: '     ابحث عن الاذكار',
                 hintStyle:  selectedAyahStyle(),
 
 
@@ -91,8 +91,8 @@ class AzkarPage extends StatelessWidget {
                   itemCount: categories.length,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
-                    crossAxisSpacing: 0,
-                    mainAxisSpacing: 0,
+                    crossAxisSpacing: .5,
+                    mainAxisSpacing: 0.5,
                   ),
                   itemBuilder: (BuildContext context, int index) {
                     return CustomAzkarPage(azkarCategory: categories[index]);

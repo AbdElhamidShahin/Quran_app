@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:quran_app/veiw/screens/HomePage.dart';
+import 'package:quran_app/veiw/screens/SplashScreen.dart'; // استيراد الصفحة الجديدة
 import 'package:quran_app/veiw/screens/Settings.dart';
 import 'package:quran_app/veiw_model/helper/saveLastReadPage.dart';
 import 'package:quran_app/veiw_model/helper/thems/ThemeProviderDarkMode.dart';
@@ -12,7 +13,6 @@ import 'model/api/apiServise.dart';
 import 'model/bloc/bloc.dart';
 
 void main() async {
-
   WidgetsFlutterBinding.ensureInitialized();
 
   runApp(
@@ -50,9 +50,9 @@ class MyApp extends StatelessWidget {
         brightness: Brightness.dark,
         scaffoldBackgroundColor: Color(0xFF121B22), // #121B22
       ),
-      home: const Directionality(
+      home: Directionality(
         textDirection: TextDirection.rtl,
-        child: HomePage(),
+        child: SplashScreen(), // جعل الشاشة الرئيسية هي SplashScreen
       ),
     );
   }
