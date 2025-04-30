@@ -30,6 +30,7 @@ class CustomQuranPage extends StatelessWidget {
         );
       },
       child: Container(
+
         padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
         margin: const EdgeInsets.symmetric(vertical: 6),
         decoration: BoxDecoration(

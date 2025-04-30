@@ -31,7 +31,8 @@ class AzkarPage extends StatelessWidget {
               ],
             ),
             child: TextField(
-              textDirection: TextDirection.rtl, // تحديد اتجاه الكتابة من اليمين لليسار
+              textDirection:
+                  TextDirection.rtl, // تحديد اتجاه الكتابة من اليمين لليسار
               keyboardType: TextInputType.text,
               inputFormatters: [
                 FilteringTextInputFormatter.allow(
@@ -41,10 +42,8 @@ class AzkarPage extends StatelessWidget {
               decoration: InputDecoration(
                 border: InputBorder.none,
                 hintText: '     ابحث عن الاذكار',
-                hintStyle:  selectedAyahStyle(),
-
-
-                prefixIcon: const Icon(Icons.search, color:primaryDark),
+                hintStyle: selectedAyahStyle(),
+                prefixIcon: const Icon(Icons.search, color: primaryDark),
                 prefixIconConstraints: BoxConstraints(
                   minWidth: 40, // يمكنك تعديل الحجم حسب الحاجة
                 ),
@@ -58,7 +57,6 @@ class AzkarPage extends StatelessWidget {
               },
             ),
           ),
-
           FutureBuilder<List<AzkarCategoryModel>>(
             future: fetchAzkarCategoryFromJson(),
             builder: (context, snapshot) {
@@ -87,6 +85,8 @@ class AzkarPage extends StatelessWidget {
 
               return Expanded(
                 child: GridView.builder(
+                  physics: BouncingScrollPhysics(
+                      parent: AlwaysScrollableScrollPhysics()),
                   padding: const EdgeInsets.all(8),
                   itemCount: categories.length,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(

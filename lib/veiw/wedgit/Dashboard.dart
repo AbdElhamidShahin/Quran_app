@@ -15,8 +15,38 @@ class Dashboard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      children: [
-        SizedBox(
+      children: [        SizedBox(
+        child: Column(
+          children: [
+            CustomContainer(
+              height1: height * .2,
+              image: 'assets/Image HomeScreen/unnamed.png',
+              title: "المسبحه",
+              color: qiblaColor,
+              onpressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SephaScreen()),
+                );
+              },
+            ),
+            CustomContainer(
+              height1: height * .27,
+              image: 'assets/Image HomeScreen/islam_14415965.png',
+              title: "أذكار الصباح والمساء",
+              color: lastReadingColor,
+              onpressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AzkarPage()),
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+
+        Spacer(),        SizedBox(
           child: Column(
             children: [
               CustomContainer(
@@ -46,37 +76,7 @@ class Dashboard extends StatelessWidget {
             ],
           ),
         ),
-        Spacer(),
-        SizedBox(
-          child: Column(
-            children: [
-              CustomContainer(
-                height1: height * .2,
-                image: 'assets/Image HomeScreen/unnamed.png',
-                title: "المسبحه",
-                color: qiblaColor,
-                onpressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => SephaScreen()),
-                  );
-                },
-              ),
-              CustomContainer(
-                height1: height * .27,
-                image: 'assets/Image HomeScreen/islam_14415965.png',
-                title: "أذكار الصباح والمساء",
-                color: lastReadingColor,
-                onpressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => AzkarPage()),
-                  );
-                },
-              ),
-            ],
-          ),
-        ),
+
       ],
     );
   }

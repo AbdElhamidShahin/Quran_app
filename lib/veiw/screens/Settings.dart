@@ -17,6 +17,7 @@ class Setings extends StatelessWidget {
     final isDarkMode = themeProvider.isDarkMode;
     return Scaffold(
       body: ListView(
+        physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
         padding: const EdgeInsets.all(16),
         children: [
           SizedBox(height: 32),

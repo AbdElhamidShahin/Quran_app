@@ -46,6 +46,8 @@ class MyQuranPage extends StatelessWidget {
 
             return AnimationLimiter(
               child: ListView.builder(
+                physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+
                 padding: const EdgeInsets.all(16),
                 itemCount: suras.length,
                 itemBuilder: (BuildContext context, int index) {

@@ -52,7 +52,7 @@ class MyApp extends StatelessWidget {
       ),
       home: Directionality(
         textDirection: TextDirection.rtl,
-        child: SplashScreen(), // جعل الشاشة الرئيسية هي SplashScreen
+        child: SplashScreen(),
       ),
     );
   }

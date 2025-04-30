@@ -38,7 +38,7 @@ import 'color.dart';
       fontFamily: 'Cairo',
       fontSize: 16,
       height: 1.6,
-      color: textPrimary, // تم التغيير إلى textPrimary
+      color: primaryDark, // تم التغيير إلى textPrimary
     );
   }
 

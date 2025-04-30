@@ -25,7 +25,7 @@ class _SplashScreenState extends State<SplashScreen> {
       backgroundColor: Colors.white,
       body: Center(
         child: Image.asset(
-          'assets/Image HomeScreen/تصميم بدون عنوان.png',
+          'assets/Image HomeScreen/logoApp.png',
         ), // قم بوضع الصورة في هذا المجلد
       ),
     );
