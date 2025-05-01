@@ -26,6 +26,8 @@ class _SplashScreenState extends State<SplashScreen> {
       body: Center(
         child: Image.asset(
           'assets/Image HomeScreen/logoApp.png',
+          fit: BoxFit.cover, // تخلي الصورة تغطي الشاشة كاملة
+
         ), // قم بوضع الصورة في هذا المجلد
       ),
     );

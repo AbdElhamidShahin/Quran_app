@@ -25,9 +25,10 @@ class _SearchScreenState extends State<SearchScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.all(12.0),
+        padding: const EdgeInsets.symmetric(vertical: 20),
         child: Column(
           children: [
+            SizedBox(height: 16,),
             Container(
               margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               decoration: BoxDecoration(
@@ -58,7 +59,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 ],
                 decoration: InputDecoration(
                   border: InputBorder.none,
-                  hintText: 'ابحث عن الاذكار',
+                  hintText: '      ابحث عن الاذكار     ',
                   hintStyle: selectedAyahStyle(),
 
                   prefixIcon: const Icon(Icons.search, color: primaryDark),
