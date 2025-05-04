@@ -23,11 +23,13 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Center(
+      body: SizedBox.expand(  // ياخد كل مساحة الشاشة
         child: Image.asset(
           'assets/Image HomeScreen/logoApp.png',
-        ), // قم بوضع الصورة في هذا المجلد
+          fit: BoxFit.cover,  // أو جرب BoxFit.fill لو عايز يضغط الصورة
+        ),
       ),
     );
   }
+
 }

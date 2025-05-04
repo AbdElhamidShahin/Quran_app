@@ -2,10 +2,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
-import 'package:quran_app/veiw/screens/HomePage.dart';
 import 'package:quran_app/veiw/screens/SplashScreen.dart'; // استيراد الصفحة الجديدة
-import 'package:quran_app/veiw/screens/Settings.dart';
-import 'package:quran_app/veiw_model/helper/saveLastReadPage.dart';
 import 'package:quran_app/veiw_model/helper/thems/ThemeProviderDarkMode.dart';
 import 'package:quran_app/veiw_model/helper/thems/color.dart';
 import 'model/ItemProvider.dart';
