@@ -1,0 +1,4 @@
+storePassword=As@01205687372
+keyPassword=As@01205687372
+keyAlias=upload
+storeFile=app/upload-keystore.jks

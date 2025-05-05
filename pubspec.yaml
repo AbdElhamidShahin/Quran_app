@@ -54,6 +54,7 @@ dependencies:
   flutter_animate: ^4.2.0
   animations: ^2.0.7
   share_plus: ^11.0.0
+  rename: ^3.0.2
 
 
 
@@ -121,7 +122,7 @@ flutter:
   # in this "flutter" section. Each entry in this list should have a
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
-  # example:
+  # abdo:
   fonts:
     - family: Cairo
       fonts:
