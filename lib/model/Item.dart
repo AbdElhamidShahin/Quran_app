@@ -9,6 +9,8 @@ class Item {
   final int startVerse;
   final int endVerse;
   int versesCount;
+  final int juz;            // ← هذا
+
 
   Item({
     required this.page,
@@ -20,6 +22,8 @@ class Item {
     required this.startVerse,
     required this.endVerse,
     required this.versesCount,
+    required this.juz,
+
   }) : id = '${surahNumber}_${page}'; // إنشاء ID من رقم السورة والصفحة
 
   factory Item.fromJson(Map<String, dynamic> json) {
@@ -40,6 +44,8 @@ class Item {
       startVerse: start['verse'] as int,
       endVerse: json['end']['verse'] as int,
       versesCount: json['end']['verse'] - start['verse'] + 1,
+      juz: json['juz'] as int,          // ← لازم تجيبه من الـ API
+
     );
   }
 
@@ -59,4 +65,30 @@ class Item {
     'end': {'verse': endVerse},
     'versesCount': versesCount,
   };
+}
+int calculateJuz(int page) {
+// يمكن تعديل هذا ليشمل أكثر من تقسيم
+if (page >= 1 && page <= 20) {
+return 1;
+} else if (page >= 21 && page <= 40) {
+return 2;
+} else if (page >= 41 && page <= 60) {
+return 3;
+} else if (page >= 61 && page <= 80) {
+return 4;
+} else if (page >= 81 && page <= 100) {
+return 5;
+} else if (page >= 101 && page <= 120) {
+return 6;
+} else if (page >= 121 && page <= 140) {
+return 7;
+} else if (page >= 141 && page <= 160) {
+return 8;
+} else if (page >= 161 && page <= 180) {
+return 9;
+} else if (page >= 181 && page <= 200) {
+return 10;
+}
+// يمكنك إضافة باقي الأجزاء حسب الحاجة.
+return 0; // في حالة عدم وجود تطابق.
 }
